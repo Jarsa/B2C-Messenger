@@ -1,12 +1,15 @@
-# -*- coding: utf-8 -*-
+# # -*- coding: utf-8 -*-
+import time
+
 import telebot
 from telebot import types
 
-TOKEN = '308245102:AAHojngXIJ9yTolBgVi8rycd-SFsUjJKs4o'
-tor = telebot.TeleBot(TOKEN)
+API_TOKEN = '308245102:AAHojngXIJ9yTolBgVi8rycd-SFsUjJKs4o'
+
+tor = telebot.TeleBot(API_TOKEN)
 
 @tor.message_handler(commands=['start'])
-def comando_ayuda(mensaje):
+def comando_bienvenida(mensaje):
     chat_id = mensaje.chat.id
     markup = types.ReplyKeyboardMarkup()
     itembtn1 = types.KeyboardButton('Checar mis puntos')
@@ -17,178 +20,142 @@ def comando_ayuda(mensaje):
     markup.row(itembtn3, itembtn4)
     tor.send_message(
         chat_id,
-        'Hola! ¡Bienvenido a b2c messenger! Me llamo b-2 '
-        'y sere tu bot asistente¿Que deseeas realizar?',
-    reply_markup=markup)
-
-@tor.message_handler(commands=['rfc'])
-def comando_rfc(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    rfc = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Guardando " + rfc + ", guardare tu rfc como ")
-
-@tor.message_handler(commands=['razon_social'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " , un gusto atenderte.")
-
-@tor.message_handler(commands=['Calle'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    calle = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + calle + " sera tu calle al momento de facturar.")
-
-@tor.message_handler(commands=['numero_int'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    numero_int = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + numero_int + " , sera tu numero interior.")
-
-@tor.message_handler(commands=['numero_ext'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    numero_ext = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + numero_ext + " , sera tu numero exterior.")
-
-@tor.message_handler(commands=['colonia'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    colonia = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + colonia + " , sera tu colonia.")
-
-@tor.message_handler(commands=['ciudad'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    ciudad = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + ciudad + "  sera tu ciudad.")
-
-@tor.message_handler(commands=['colonia'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu colonia.")
-
-@tor.message_handler(commands=['estado'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu estado")
-
-@tor.message_handler(commands=['localidad'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu localidad")
-
-@tor.message_handler(commands=['codigo_postal'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu codigo postal.")
-
-@tor.message_handler(commands=['correo_electronico'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu correo electronico.")
-
-@tor.message_handler(commands=['regimen_fiscal'])
-def comando_nombre(mensaje):
-    chat_id = mensaje.chat.id
-    message_array = mensaje.text.split()
-    message_array.pop(0)
-    nombre = ' '.join(message_array)
-    tor.send_message(
-        chat_id,
-        "Entendido, " + nombre + " sera tu regimen fiscal.")
+        'Hola! ¡Bienvenido a btoc messenger! Me llamo b-2 '
+        'y sere tu bot asistente ¿Que deseeas realizar?',
+        reply_markup=markup)
 
 @tor.message_handler(func=lambda message: message.text == 'Solicitar factura')
+def solicitar_factura(message):
+    markup = types.ReplyKeyboardMarkup()
+    affirmative = types.KeyboardButton('Si, claro que quiero!')
+    negative = types.KeyboardButton('No, gracias!')
+    markup.row(affirmative)
+    markup.row(negative)
+    question = tor.send_message(
+        message.chat.id,
+        'Al parecer tus datos no estan registrados en nuestro sistema.\n'
+        '¿Te parece bien que comencemos el registro unico para guardar tu'
+        ' informacion?', reply_markup=markup)
+    tor.register_next_step_handler(question, process_name_step)
+
+def process_name_step(message):
+    chat_id = message.chat.id
+    if message.text == 'Si, claro que quiero!':
+        calle = tor.send_message(chat_id, '¿A que calle voy a facturar?')
+        tor.register_next_step_handler(calle, process_calle_step)
+    else:
+        tor.send_message(chat_id, 'Si quiere.')
+
+def process_calle_step(message):
+    try:
+        chat_id = message.chat.id
+        calle = message.text
+        num_int = tor.send_message(chat_id, '¿Cual es el numero interior?')
+        tor.register_next_step_handler(num_int, procces_numero_int_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def procces_numero_int_step(message):
+    try:
+        chat_id = message.chat.id
+        numero_int = message.text
+        numero_ext = tor.send_message(chat_id, '¿Cual es el numero exterior?')
+        tor.register_next_step_handler(numero_ext, process_numero_ext_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_numero_ext_step(message):
+    try:
+        chat_id = message.chat.id
+        numero_ext = message.text
+        colonia = tor.send_message(chat_id, '¿Cual es tu colonia?')
+        tor.register_next_step_handler(colonia, process_colonia_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_colonia_step(message):
+    try:
+        chat_id = message.chat.id
+        colonia = message.text
+        localidad = tor.send_message(chat_id, '¿Cual es tu localidad?')
+        tor.register_next_step_handler(localidad, process_localidad_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_localidad_step(message):
+    try:
+        chat_id = message.chat.id
+        localidad = message.text
+        ciudad = tor.send_message(chat_id, '¿Cual es tu ciudad?')
+        tor.register_next_step_handler(ciudad, process_ciudad_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_ciudad_step(message):
+    try:
+        chat_id = message.chat.id
+        colonia = message.text
+        estado = tor.send_message(chat_id, '¿Cual es tu estado?')
+        tor.register_next_step_handler(estado, procces_estado_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def procces_estado_step(message):
+    try:
+        chat_id = message.chat.id
+        estado = message.text
+        codigo_postal = tor.send_message(chat_id, '¿Cual es tu codigo postal?')
+        tor.register_next_step_handler(
+            codigo_postal,
+            procces_codigo_postal_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def procces_codigo_postal_step(message):
+    try:
+        chat_id = message.chat.id
+        codigo_postal = message.text
+        regimen_fiscal = tor.send_message(
+            chat_id, '¿Cual es tu regimen fiscal?')
+        tor.register_next_step_handler(regimen_fiscal, process_regimen_fiscal)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_regimen_fiscal(message):
+    try:
+        chat_id = message.chat.id
+        regimen = message.text
+        razon_social = tor.send_message(chat_id, '¿Cual es tu razon social?')
+        tor.register_next_step_handler(razon_social, process_razon_social)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def process_razon_social(message):
+    try:
+        chat_id = message.chat.id
+        razon_social = message.text
+        rfc = tor.send_message(chat_id, '¿Cual es tu RFC?')
+        tor.register_next_step_handler(rfc, procces_rfc_step)
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+def procces_rfc_step(message):
+    try:
+        chat_id = message.chat.id
+        rfc = message.text
+        tor.send_message(
+            chat_id,
+            'Excelente, has terminado '
+            'de guardar tu informacion!')
+    except Exception as e:
+        tor.send_message(message, 'ooooops')
+
+@tor.message_handler(func=lambda message: message.text == 'Checar mis puntos')
 def handle_text_doc(message):
     tor.send_message(
         message.chat.id,
-        'Al parecer tus datos no estan egistrados en nuestro sistema.\n'
-        ' A continuacion puedes registrar tu informacion de la siguiente'
-        ' manera!.\n\n1.-/rfc "tu rfc"\n2./razon_social '
-        '"tu razon social"-\n3.-/calle "tu calle"\n'
-        '4.-/numero_int "tu numero interior"\n'
-        '5.-/numero_ext "tu numero exterior"'
-        '\n6.-/colonia "tu colonia"\n7.-/ciudad "tu ciudad"'
-        '\n8.-/estado "tu estado"\n9.-/localidad "tu localidad"'
-        '\n10.-/codigo_postal "tu codigo postal"\n'
-        '11.-/email "tu email"\n12.-/regimen_fiscal "tu regimen fiscal"\n')
-    pass
+        'Hola' + message.chat.first_name + ', actualmente cuentas con una'
+        ' cantidad de 29 puntos, con los cuales puedes realizar compras en'
+        ' alguno nuestros siguientes departamentos')
 
-# @tor.message_handler(commands=['mis_puntos'])
-# def comando_regimen_fiscal(mensaje):
-#     chat_id = mensaje.chat.id
-#     tor.send_message(
-#         chat_id,
-#         "Hola " + mensaje.chat.first_name +
-#         ", sumando tu ultima compra actualmente cuentas con una cantidad de "
-#         "8745 puntos. Que tengas un excelente dia")
-
-# @tor.message_handler(func=lambda message: message.text == 'Checar mis puntos')
-# def handle_text_doc(message):
-#     tor.send_message(message.chat.id, 'Acabas de seleccionar checar puntos')
-#     import ipdb; ipdb.set_trace()
-#     pass
-
-# @tor.message_handler(func=lambda message: message.text == 'Realizar encuesta')
-# def handle_text_doc(message):
-#     tor.send_message(message.chat.id, 'Acabas de seleccionar realizar encuesta')
-#     pass
-
-# def listener(mensajes):
-#     for mensaje in mensajes:
-
-# tor.set_update_listener(listener)
-tor.polling()
+tor.polling(none_stop=True)

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="btoc_user_tree" model="ir.ui.view">
+			<field name="name">user</field>
+			<field name="model">btoc.user</field>
+			<field name="arch" type="xml">
+				<tree string="user" editable='top'>
+					<field name='name'/>
+					<field name='description'/>
+				</tree>
+			</field>
+		</record>
+		<record id="action_btoc_user" model="ir.actions.act_window">
+			<field name="name">users</field>
+			<field name="res_model">btoc.user</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	</data>
+</odoo>
