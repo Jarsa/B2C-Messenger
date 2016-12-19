@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		  <record model="ir.ui.view" id="btoc_user_form_view">
+            <field name="name">btoc.user</field>
+            <field name="model">btoc.user</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<sheet>
+            		<field name="name" position="before">
+						<field name="telegram_id"/>
+	                </field>
+            	</sheet>
+            </field>
+        </record>
+
+		<record id="action_btoc_user" model="ir.actions.act_window">
+			<field name="name">users</field>
+			<field name="res_model">btoc.user</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+	</data>
+</odoo>

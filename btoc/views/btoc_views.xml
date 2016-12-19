@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <menuitem icon="fa-truck" id="menu_btoc" name="B2C Panel control" sequence="10"/>
+        <menuitem id="menu_btoc_user" name="users" action='btoc.action_btoc_user' parent="menu_btoc" sequence="20"/>
+    </data>
+</odoo>
