@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record model="ir.ui.view" id="partner_user_form_view">
-            <field name="name">Partner</field>
+            <field name="name">Contacts</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
@@ -20,8 +20,19 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="partner_tree_view">
+            <field name="name">Contacts.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <tree position="inside">
+                    <field name="telegram_id"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="action_btoc_user" model="ir.actions.act_window">
-            <field name="name">User</field>
+            <field name="name">Contacts</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">tree,form</field>
         </record>

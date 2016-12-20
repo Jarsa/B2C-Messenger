@@ -2,8 +2,16 @@
 <odoo>
     <data>
         <menuitem icon="fa-truck" id="menu_btoc" name="B2C Panel control" sequence="10"/>
-        <menuitem id="menu_btoc_user" name="users" action='action_btoc_user' parent="menu_btoc" sequence="20"/>
-        <menuitem id="menu_btoc_campaign" name="campaigns" action='action_btoc_campaign' parent="menu_btoc" sequence="20"/>
-        <menuitem id="menu_btoc_message" name="messages" action='action_btoc_message' parent="menu_btoc" sequence="20"/>
+        <!-- agenda -->
+        <menuitem id="menu_btoc_agenda" name="Agenda" parent="menu_btoc" sequence="20"/>
+        <menuitem id="menu_btoc_agenda_contact" name="Contacts" action='action_btoc_user' parent="menu_btoc_agenda"/>
+        <!-- campaign -->
+        <menuitem id="menu_btoc_campaign" name="Campaigns" parent="menu_btoc" sequence="30"/>
+        <menuitem id="menu_btoc_campaign_compaign" name="Campaigns" action='action_btoc_campaign' parent="menu_btoc_campaign"/>
+        <menuitem id="menu_btoc_campaign_message" name="Messages" action='action_btoc_message' parent="menu_btoc_campaign"/>
+        <!-- messenger -->
+        <menuitem id="menu_btoc_messenger" name="Messenger Service" parent="menu_btoc" sequence="40"/>
+        <menuitem id="menu_btoc_messenger_message" name="Sending messages" action='action_btoc_messenger' parent="menu_btoc_messenger"/>
+        <menuitem id="menu_btoc_messenger_draft" name="Draft" action='' parent="menu_btoc_messenger"/>
     </data>
 </odoo>

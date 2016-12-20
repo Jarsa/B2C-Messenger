@@ -58,6 +58,17 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="message_tree_view">
+            <field name="name">message.tree</field>
+            <field name="model">btoc.message</field>
+            <field name="arch" type="xml">
+                <tree string="Message Tree">
+                    <field name="name"/>
+                    <field name="campaign_id"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="action_btoc_message" model="ir.actions.act_window">
             <field name="name">Messages</field>
             <field name="res_model">btoc.message</field>

@@ -20,7 +20,7 @@
             <field name="name">Campaigns</field>
             <field name="res_model">btoc.campaign</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_mode">tree,form</field>
         </record>
     </data>
 </odoo>
