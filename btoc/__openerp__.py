@@ -16,6 +16,8 @@
     'data': [
         'security/ir.model.access.csv',
         'views/btoc_user_view.xml',
+        'views/btoc_campaign_view.xml',
+        'views/btoc_message_view.xml',
         'views/btoc_views.xml',
     ],
     'installable': True,

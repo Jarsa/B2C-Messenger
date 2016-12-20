@@ -7,6 +7,5 @@ from openerp import fields, models
 
 class BtocUser(models.Model):
     _inherit = 'res.partner'
-    _name = 'btoc.user'
 
     telegram_id = fields.Char(string='Telegram chat identifier')
