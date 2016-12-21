@@ -1,5 +1,4 @@
-# # -*- coding: utf-8 -*-
-import time
+# -*- coding: utf-8 -*-
 
 import telebot
 from telebot import types
@@ -20,7 +19,6 @@ def comando_bienvenida(mensaje):
     itembtn5 = types.KeyboardButton('Notificar irregularidad')
     itembtn6 = types.KeyboardButton('Realizar encuesta')
     itembtn7 = types.KeyboardButton('Calificacion de servicios')
-
     markup.row(itembtn1, itembtn2, itembtn3)
     markup.row(itembtn4, itembtn5, itembtn6)
     markup.row(itembtn7)
@@ -70,9 +68,13 @@ def process_confirmation_step(message):
 
 
 def process_name_step(message):
+    markup_hide = types.ReplyKeyboardRemove(selective=False)
     chat_id = message.chat.id
     name = message.text
-    calle = bot.send_message(chat_id, '¿A que calle voy a facturar?')
+    calle = bot.send_message(
+        chat_id,
+        '¿A que calle voy a facturar?',
+        reply_markup=markup_hide)
     bot.register_next_step_handler(calle, process_calle_step)
 
 
@@ -90,8 +92,18 @@ def procces_numero_int_step(message):
     try:
         chat_id = message.chat.id
         numero_int = message.text
-        numero_ext = bot.send_message(chat_id, '¿Cual es el numero exterior?')
-        bot.register_next_step_handler(numero_ext, process_numero_ext_step)
+        if numero_int.isdigit() or numero_int.upper() == 'N/A':
+            numero_ext = bot.send_message(
+                chat_id,
+                '¿Cual es el '
+                'numero exterior?')
+            bot.register_next_step_handler(numero_ext, process_numero_ext_step)
+        else:
+            numero_int = bot.send_message(
+                chat_id,
+                'El numero interior debe de ser un '
+                'numero. \n¿Cual es tu numero interior?')
+            bot.register_next_step_handler(numero_int, procces_numero_int_step)
     except Exception as e:
         bot.send_message(message, 'ooooops')
 
@@ -100,8 +112,15 @@ def process_numero_ext_step(message):
     try:
         chat_id = message.chat.id
         numero_ext = message.text
-        colonia = bot.send_message(chat_id, '¿Cual es tu colonia?')
-        bot.register_next_step_handler(colonia, process_colonia_step)
+        if not numero_ext.isdigit():
+            numero_ext = bot.send_message(
+                chat_id,
+                'El numero exterior debe de ser '
+                'un numero. \n¿Cual es tu numero exterior?')
+            bot.register_next_step_handler(numero_ext, process_numero_ext_step)
+        else:
+            colonia = bot.send_message(chat_id, '¿Cual es tu colonia?')
+            bot.register_next_step_handler(colonia, process_colonia_step)
     except Exception as e:
         bot.send_message(message, 'ooooops')
 
@@ -159,7 +178,7 @@ def procces_codigo_postal_step(message):
             bot.register_next_step_handler(
                 codigo_postal, procces_codigo_postal_step)
         else:
-            markup = types.ReplyKeyboardMarkup()
+            markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             inciso_moral = types.KeyboardButton('Persona moral')
             inciso_fisica = types.KeyboardButton('Persona fisica')
             inciso_no_luc = types.KeyboardButton('Asociaciones no lucrativas')
@@ -179,9 +198,13 @@ def procces_codigo_postal_step(message):
 
 def process_regimen_fiscal(message):
     try:
+        markup_hide = types.ReplyKeyboardRemove(selective=False)
         chat_id = message.chat.id
         regimen = message.text
-        razon_social = bot.send_message(chat_id, '¿Cual es tu rfc?')
+        razon_social = bot.send_message(
+            chat_id,
+            '¿Cual es tu rfc?',
+            reply_markup=markup_hide)
         bot.register_next_step_handler(razon_social, procces_rfc_step)
     except Exception as e:
         bot.send_message(message, 'ooooops')
@@ -189,6 +212,7 @@ def process_regimen_fiscal(message):
 
 def procces_rfc_step(message):
     try:
+        import ipdb; ipdb.set_trace()
         chat_id = message.chat.id
         letras = message.text[0:4]
         numeros = message.text[4:10]
@@ -207,7 +231,6 @@ def procces_rfc_step(message):
             itembtn5 = types.KeyboardButton('Notificar irregularidad')
             itembtn6 = types.KeyboardButton('Realizar encuesta')
             itembtn7 = types.KeyboardButton('Calificacion de servicios')
-
             markup.row(itembtn1, itembtn2, itembtn3)
             markup.row(itembtn4, itembtn5, itembtn6)
             markup.row(itembtn7)
@@ -275,17 +298,20 @@ def handle_notificar_irregularidad(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Realizar encuesta')
 def handle_realizar_encuesta(message):
-    markup = types.ReplyKeyboardMarkup()
+    markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
     inciso_a = types.KeyboardButton('1')
     inciso_b = types.KeyboardButton('2')
     inciso_c = types.KeyboardButton('3')
     inciso_d = types.KeyboardButton('Prefiero no contestar')
     markup.row(inciso_a, inciso_b)
     markup.row(inciso_c, inciso_d)
+    ticket = open('/home/hector/Documentos/Jarsa_sistemas'
+                  '/B2C-Messenger/telegramOdoo/Picture1.jpg', 'rb')
+    bot.send_photo(message.chat.id, ticket)
     respuesta = bot.send_message(
         message.chat.id,
         'ENCUESTA DE SATISFACCION \nEstimado Cliente, rogamos su valiosa '
-        'ayuda para calificar el servicio que ha recibido del promobot que la '
+        'ayuda para calificar el servicio que ha recibido del promotor que la '
         'atiende en nuestra representación (Sr, Juan Martínez Pérez), en la '
         'breve encuesta que le enviamos anexa en este mensaje, por favor solo '
         'con el numero de la respuesta que elija.\n\n'
@@ -308,17 +334,28 @@ def procces_notificar_irregularidad(message):
 
 def process_guardar_respuesta(message):
     try:
+        markup = types.ReplyKeyboardMarkup()
+        itembtn1 = types.KeyboardButton('Solicitar factura')
+        itembtn2 = types.KeyboardButton('Notificacion de puntos ganados')
+        itembtn3 = types.KeyboardButton('Checar vencimiento de productos')
+        itembtn4 = types.KeyboardButton('Consulta de saldos')
+        itembtn5 = types.KeyboardButton('Notificar irregularidad')
+        itembtn6 = types.KeyboardButton('Realizar encuesta')
+        itembtn7 = types.KeyboardButton('Calificacion de servicios')
+        markup.row(itembtn1, itembtn2, itembtn3)
+        markup.row(itembtn4, itembtn5, itembtn6)
+        markup.row(itembtn7)
         respuesta = message.text
         if respuesta not in ['1', '2', '3']:
             bot.send_message(
                 message.chat.id,
                 'Entendemos tu discrecion \n'
-                'Gracias por responder!')
+                'Gracias por responder!', reply_markup=markup)
         else:
             bot.send_message(
                 message.chat.id,
                 'Su respuesta fue: ' + respuesta + '\n Muchas gracias'
-                'por colaborar, seguiremos mejorando gracias a usted!')
+                'por colaborar, seguiremos mejorando gracias a usted!', reply_markup=markup)
     except Exception as e:
         bot.send_message(message.chat.id, 'oooooops')
 
