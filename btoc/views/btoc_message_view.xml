@@ -1,0 +1,79 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="message_form_view">
+            <field name="name">Message</field>
+            <field name="model">btoc.message</field>
+            <field name="arch" type="xml">
+                <form string='description'>
+                    <sheet>
+                        <h1><field name='name' placeholder="Name"/></h1>
+                        <group>
+                            <field name='campaign_id'/>
+                            <field name='message'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="message_kanban_view" model="ir.ui.view">
+            <field name="name">btoc.message.kanban</field>
+            <field name="model">btoc.message</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="campaign_id">
+                    <field name="color"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="
+                                    oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                    oe_kanban_global_click_edit oe_semantic_html_override
+                                    oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                <div class="oe_dropdown_kanban">
+                                    <!-- dropdown menu -->
+                                    <div class="oe_dropdown_toggle">
+                                        <i class="fa fa-bars fa-lg"/>
+                                        <ul class="oe_dropdown_menu">
+                                            <li>
+                                                <a type="delete">Delete</a>
+                                            </li>
+                                            <li>
+                                                <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="oe_clear"/>
+                                </div>
+                                <div t-attf-class="oe_kanban_content">
+                                    <b>Name:</b>
+                                    <field name="name"/>
+                                    <br/>
+                                    <b>Message:</b>
+                                    <field name="message"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="message_tree_view">
+            <field name="name">message.tree</field>
+            <field name="model">btoc.message</field>
+            <field name="arch" type="xml">
+                <tree string="Message Tree">
+                    <field name="name"/>
+                    <field name="campaign_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_btoc_message" model="ir.actions.act_window">
+            <field name="name">Messages</field>
+            <field name="res_model">btoc.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+        </record>
+    </data>
+</odoo>

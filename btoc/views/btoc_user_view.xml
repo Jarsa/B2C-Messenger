@@ -1,24 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
 <odoo>
-	<data>
-		  <record model="ir.ui.view" id="btoc_user_form_view">
-            <field name="name">btoc.user</field>
-            <field name="model">btoc.user</field>
+    <data>
+        <record model="ir.ui.view" id="partner_user_form_view">
+            <field name="name">Contacts</field>
+            <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-            	<sheet>
-            		<field name="name" position="before">
-						<field name="telegram_id"/>
-	                </field>
-            	</sheet>
+                <notebook position="inside">
+                    <page string="Telegram">
+                        <group>
+                            <group>
+                                <field name="telegram_id"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                    </page>
+                </notebook>
             </field>
         </record>
 
-		<record id="action_btoc_user" model="ir.actions.act_window">
-			<field name="name">users</field>
-			<field name="res_model">btoc.user</field>
-			<field name="view_type">form</field>
-			<field name="view_mode">tree,form</field>
-		</record>
-	</data>
+        <record model="ir.ui.view" id="partner_tree_view">
+            <field name="name">Contacts.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <tree position="inside">
+                    <field name="telegram_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_btoc_user" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
 </odoo>

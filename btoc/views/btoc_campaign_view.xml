@@ -1,0 +1,26 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="campaign_form_view">
+            <field name="name">Campaign</field>
+            <field name="model">btoc.campaign</field>
+            <field name="arch" type="xml">
+                <form string='description'>
+                    <sheet>
+                        <group>
+                            <field name='name'/>
+                            <field name='message_ids'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_btoc_campaign" model="ir.actions.act_window">
+            <field name="name">Campaigns</field>
+            <field name="res_model">btoc.campaign</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
