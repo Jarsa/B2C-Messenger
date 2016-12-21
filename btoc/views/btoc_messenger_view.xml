@@ -20,6 +20,11 @@
                                     <field name='contact_ids' nolabel="1"/>
                                 </group>
                             </page>
+                            <page string="Draft">
+                                <group>
+                                    <field name='draft'/>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                 </form>
@@ -30,10 +35,11 @@
             <field name="name">messenger.tree</field>
             <field name="model">btoc.messenger</field>
             <field name="arch" type="xml">
-                <tree string="Messenger Tree">
+                <tree string="Messenger Tree" decoration-danger="draft == True">
                     <field name="message_id"/>
                     <field name="campaign_id"/>
                     <field name="contact_ids"/>
+                    <field name="draft"/>
                 </tree>
             </field>
         </record>

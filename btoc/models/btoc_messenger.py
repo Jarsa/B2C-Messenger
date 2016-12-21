@@ -15,6 +15,7 @@ class Messenger(models.Model):
     message_id = fields.Many2one(
         'btoc.message', string="Message Name", required=True)
     message = fields.Char(compute="_get_message")
+    draft = fields.Boolean()
 
     @api.depends('message_id')
     def _get_message(self):
