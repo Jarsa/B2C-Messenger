@@ -3,8 +3,8 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 {
-    'name': 'btoc Panel Control',
-    'summary': 'btoc Panel Control',
+    'name': 'B2C Messenger Panel Control',
+    'summary': 'B2C Messenger Panel Control',
     'version': '9.0.1.0.0',
     'category': 'Generic Modules',
     'author': (
@@ -12,7 +12,7 @@
         'Odoo Community Association (OCA)'),
     'website': 'https://www.odoo-community.org',
     'license': 'LGPL-3',
-    'depends': [],
+    'depends': ['base', 'telegram'],
     'data': [
         'security/ir.model.access.csv',
         'views/btoc_user_view.xml',

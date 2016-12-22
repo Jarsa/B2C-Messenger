@@ -9,11 +9,11 @@ class Messenger(models.Model):
     _name = 'btoc.messenger'
 
     campaign_id = fields.Many2one(
-        'btoc.campaign', required=True, string="Campaign")
+        'btoc.campaign', string="Campaign")
     contact_ids = fields.Many2many(
-        'res.partner', string="Contact(s)", required=True)
+        'res.partner', string="Contact(s)")
     message_id = fields.Many2one(
-        'btoc.message', string="Message Name", required=True)
+        'btoc.message', string="Message Name")
     message = fields.Char(compute="_get_message")
     draft = fields.Boolean()
 
