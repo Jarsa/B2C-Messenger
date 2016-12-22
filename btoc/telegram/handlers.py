@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import openerp.tools.config as config
-from contextlib import closing
 import logging
-from openerp import api, SUPERUSER_ID, sql_db, models
+import openerp
+from openerp import SUPERUSER_ID
 from telebot import types
+from openerp.modules.registry import RegistryManager
+from openerp.api import Environment
 
 _logger = logging.getLogger("[TELEGRAM_HANDLERS]")
 
@@ -16,14 +17,16 @@ class TelegramBotHandlers(object):
         self.uid = SUPERUSER_ID
         self.context = {}
 
-    # def get_cursor(self):
-    #     return sql_db.db_connect(config['db_name']).cursor()
-
     def handle(self):
+        args = ['-d', 'test']
+        openerp.tools.config.parse_config(args)
+
+        r = RegistryManager.get('test')
+        cr = r.cursor()
+        Environment.reset()
+        env = Environment(cr, SUPERUSER_ID, context={})
         _logger.info('TelegramBOTHandlers: handle -> %r' % (self.bot))
         BOT = self.bot
-        # env = api.Environment(
-        #     self.get_cursor(), self.uid, self.context)
 
         @BOT.message_handler(commands=['start'])
         def comando_bienvenida(mensaje):
@@ -298,7 +301,7 @@ class TelegramBotHandlers(object):
         @BOT.message_handler(
             func=lambda message: message.text ==
             'Checar vencimiento de productos')
-        def handle_realizar_encuesta(message):
+        def handle_consulta_saldo(message):
             BOT.send_message(
                 message.chat.id,
                 'Estimado ' + str(message.chat.first_name) + ', Ud '
