@@ -75,12 +75,22 @@ class TelegramBotHandlers(object):
             BOT.register_next_step_handler(question, process_razon_social_step)
 
         def process_razon_social_step(message):
-            razon_social = BOT.send_message(
-                message.chat.id,
-                'Capture razon social')
-            BOT.register_next_step_handler(
-                razon_social,
-                process_rfc_step)
+            if message.text == 'Nuevo RFC':
+                razon_social = BOT.send_message(
+                    message.chat.id,
+                    'Capture razon social')
+                BOT.register_next_step_handler(
+                    razon_social,
+                    process_rfc_step)
+            else:
+                pdf = open(
+                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'telegram/extras/factura_electronica.pdf', 'rb')
+                xml = open(
+                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'telegram/extras/factura_electronica.xml', 'rb')
+                BOT.send_document(message.chat.id, pdf)
+                BOT.send_document(message.chat.id, xml)
 
         def process_rfc_step(message):
             self.partner['razon_social'] = message.text
