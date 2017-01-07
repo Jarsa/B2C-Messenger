@@ -12,7 +12,7 @@
         'Odoo Community Association (OCA)'),
     'website': 'https://www.odoo-community.org',
     'license': 'LGPL-3',
-    'depends': ['base', 'telegram'],
+    'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
         'views/btoc_user_view.xml',
