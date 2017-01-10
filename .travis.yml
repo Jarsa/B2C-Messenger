@@ -18,6 +18,7 @@ addons:
       - python-simplejson
       - python-yaml
       - wkhtmltopdf
+      - pyTelegramBotAPI
 
 env:
   global:

@@ -23,5 +23,4 @@
         'views/btoc_views.xml',
     ],
     'installable': True,
-    'active': True
 }

@@ -18,6 +18,6 @@ class Messenger(models.Model):
     draft = fields.Boolean()
 
     @api.depends('message_id')
-    def _get_message(self):
+    def _compute_get_message(self):
         for rec in self:
             rec.message = rec.message_id.message

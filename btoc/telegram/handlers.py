@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import openerp
-from openerp import api, SUPERUSER_ID
+from openerp import SUPERUSER_ID
 from telebot import types
 from openerp.modules.registry import RegistryManager
 from openerp.api import Environment
-from contextlib import closing
 
 _logger = logging.getLogger("[TELEGRAM_BOT]")
 
@@ -67,7 +65,6 @@ class TelegramBotHandlers(object):
                 reply_markup=markup)
 
         def process_rfc_select_step(message):
-            selected_ticked = message.text
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             rfc1 = types.KeyboardButton('JUSA-790312-yh2')
             rfc2 = types.KeyboardButton('HMGR-821211-7er')
@@ -162,7 +159,6 @@ class TelegramBotHandlers(object):
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
-            markup = self.show_telebot_menu()
             pdf = open(
                 '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
                 'telegram/extras/factura_electronica.pdf', 'rb')
@@ -230,6 +226,10 @@ class TelegramBotHandlers(object):
                     'Jarsa_sistemas/B2C-Messenger/btoc/'
                     'telegram/extras/ropa_opt.jpg', 'rb')
             BOT.send_photo(message.chat.id, imagen)
+            BOT.send_message(
+                message.chat.id,
+                '¿Que accion deseas realizar?',
+                reply_markup=markup)
 
         def process_calidad_step(message):
             reporte_calidad = BOT.send_message(
