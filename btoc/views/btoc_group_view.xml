@@ -1,0 +1,24 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="group_form_view">
+            <field name="name">Group</field>
+            <field name="model">btoc.group</field>
+            <field name="arch" type="xml">
+                <form string='description'>
+                    <sheet>
+                        <group>
+                            <field name='name'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_btoc_group" model="ir.actions.act_window">
+            <field name="name">Group</field>
+            <field name="res_model">btoc.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

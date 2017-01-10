@@ -6,3 +6,4 @@ from . import btoc_campaign
 from . import btoc_message
 from . import btoc_messenger
 from . import btoc_user
+from . import btoc_group

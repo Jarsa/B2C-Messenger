@@ -18,11 +18,17 @@ class TelegramBotHandlers(object):
         self.uid = SUPERUSER_ID
         self.context = {}
         self.partner = {
+            'telegram_id': '',
             'razon_social': '',
             'rfc': '',
             'direccion': '',
             'regimen_fiscal': '',
+            'notify_email': 'never',
         }
+        self.r = RegistryManager.get('test')
+        self.cr = self.r.cursor()
+        Environment.reset()
+        self.env = Environment(self.cr, self.uid, context={})
 
     def show_telebot_menu(self):
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -52,8 +58,9 @@ class TelegramBotHandlers(object):
         markup = self.show_telebot_menu()
 
         @BOT.message_handler(commands=['start'])
-        def comando_bienvenida(mensaje):
-            chat_id = mensaje.chat.id
+        def comando_bienvenida(message):
+            self.partner['telegram_id'] = message.chat.id
+            chat_id = message.chat.id
             BOT.send_message(
                 chat_id,
                 '¿Que accion deseas realizar?',
@@ -84,14 +91,17 @@ class TelegramBotHandlers(object):
                     process_rfc_step)
             else:
                 pdf = open(
-                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
+                    '/home/hector/Documentos/'
+                    'Jarsa_sistemas/B2C-Messenger/btoc/'
                     'telegram/extras/factura_electronica.pdf', 'rb')
                 xml = open(
-                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
+                    '/home/hector/Documentos/'
+                    'Jarsa_sistemas/B2C-Messenger/btoc/'
                     'telegram/extras/factura_electronica.xml', 'rb')
                 BOT.send_document(message.chat.id, pdf)
                 BOT.send_document(message.chat.id, xml)
-                BOT.send_message(message.chat.id,
+                BOT.send_message(
+                    message.chat.id,
                     '¿Que accion desea realizar?',
                     reply_markup=markup)
 
