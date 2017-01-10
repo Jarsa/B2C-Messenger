@@ -91,6 +91,9 @@ class TelegramBotHandlers(object):
                     'telegram/extras/factura_electronica.xml', 'rb')
                 BOT.send_document(message.chat.id, pdf)
                 BOT.send_document(message.chat.id, xml)
+                BOT.send_message(message.chat.id,
+                    '¿Que accion desea realizar?',
+                    reply_markup=markup)
 
         def process_rfc_step(message):
             self.partner['razon_social'] = message.text
@@ -149,6 +152,7 @@ class TelegramBotHandlers(object):
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
+            markup = self.show_telebot_menu()
             pdf = open(
                 '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
                 'telegram/extras/factura_electronica.pdf', 'rb')
@@ -157,6 +161,10 @@ class TelegramBotHandlers(object):
                 'telegram/extras/factura_electronica.xml', 'rb')
             BOT.send_document(message.chat.id, pdf)
             BOT.send_document(message.chat.id, xml)
+            BOT.send_message(
+                message.chat.id,
+                '¿Que accion deseas realizar?',
+                reply_markup=markup)
 
         @BOT.message_handler(
             func=lambda message: message.text == '1.- Solicitar ticket')
@@ -187,18 +195,20 @@ class TelegramBotHandlers(object):
             BOT.register_next_step_handler(rating, process_save_rating)
 
         def process_save_rating(message):
+            markup = self.show_telebot_menu()
             BOT.send_message(
                 message.chat.id,
                 'Gracias por su pronta respuesta, '
-                'con esta valiosa informacion haremos los ajustes necesarios')
+                'con esta valiosa informacion haremos los ajustes necesarios',
+                reply_markup=markup)
 
         def process_promocion_step(message):
-            promocion = message.text
-            if promocion == 'Linea blanca':
+            promocion = str(message.text)
+            if promocion == 'Linea Blanca':
                 imagen = open(
                     '/home/hector/Documentos/'
                     'Jarsa_sistemas/B2C-Messenger/btoc/'
-                    'telegram/extras/Linea Blancas_opt.jpg', 'rb')
+                    'telegram/extras/Linea Blanca_opt.jpg', 'rb')
             elif promocion == 'Electronica':
                 imagen = open(
                     '/home/hector/Documentos/'
@@ -222,12 +232,13 @@ class TelegramBotHandlers(object):
                 process_reporte_step)
 
         def process_reporte_step(message):
+            markup = self.show_telebot_menu()
             BOT.send_message(
                 message.chat.id,
                 'Muchas gracias por reportarnos esto, '
                 'el folio que se le asigno es el # 12412, '
                 'en breve un agente se comunicara con ud. '
-                'para dar seguimiento al caso.')
+                'para dar seguimiento al caso.', reply_markup=markup)
 
         @BOT.message_handler(
             func=lambda message: message.text == '2.- Factura electronica')
@@ -248,6 +259,7 @@ class TelegramBotHandlers(object):
         @BOT.message_handler(
             func=lambda message: message.text == '3.- Saldo Puntos')
         def handle_saldo_puntos(message):
+            markup = self.show_telebot_menu()
             BOT.send_message(
                 message.chat.id,
                 '[10/23/2015, 2:45 PM] Estimado Cliente, Celular 521 '
@@ -258,7 +270,7 @@ class TelegramBotHandlers(object):
                 'aplicándolos en las promociones vigentes. Para conocer '
                 'las promociones, solo presione el siguiente link: '
                 'saldo_puntos, o el botón “Saldo Puntos” del menú.'
-                '\nGracias por su preferencia')
+                '\nGracias por su preferencia', reply_markup=markup)
 
         @BOT.message_handler(
             func=lambda message: message.text == '4.- Promociones')
