@@ -20,9 +20,9 @@ class TelegramBotHandlers(object):
             'telegram_id': '',
             'name': '',
             'vat': '',
-            'contact_addresss': '',
-            'regimen_fiscal': '',
-            'notify_email': 'never',
+            'contact_address': '',
+            'property_account_position_id': '',
+            'notify_email': 'none',
         }
         self.r = RegistryManager.get('test')
         self.cr = self.r.cursor()
@@ -111,7 +111,7 @@ class TelegramBotHandlers(object):
             BOT.register_next_step_handler(rfc, process_direccion_step)
 
         def process_direccion_step(message):
-            self.partner['vat'] = message.text
+            self.partner['vat'] = 'MX' + message.text
             direccion = BOT.send_message(
                 message.chat.id, 'Capture direccion')
             BOT.register_next_step_handler(
@@ -123,11 +123,10 @@ class TelegramBotHandlers(object):
             with api.Environment.manage():
                 self.env = api.Environment(
                       self.cr, self.uid, self.context)
-                with closing(self.env.cr):
-                    regimenes = self.env['account.fiscal.position'].search([])
-                    for regimen in regimenes:
-                        reg = types.KeyboardButton(str(regimen.name))
-                        markup.row(reg)
+                regimenes = self.env['account.fiscal.position'].search([])
+                for regimen in regimenes:
+                    reg = types.KeyboardButton(str(regimen.name))
+                    markup.row(reg)
             regimen_fiscal = BOT.send_message(
                 message.chat.id,
                 'Seleccione un regimen fiscal', reply_markup=markup)
@@ -136,7 +135,7 @@ class TelegramBotHandlers(object):
                 process_validar_info_step)
 
         def process_validar_info_step(message):
-            self.partner['account_fiscal_position'] = 1
+            self.partner['property_account_position_id'] = 1
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')
             negativo = types.KeyboardButton('NO')
@@ -151,7 +150,7 @@ class TelegramBotHandlers(object):
                 '\nDireccion: ' +
                 str(self.partner['contact_address']).encode('utf-8') +
                 '\n Regimen fiscal: ' +
-                str(self.partner['account_fiscal_position']).encode('utf-8'),
+                str(self.partner['property_account_position_id']).encode('utf-8'),
                 reply_markup=markup)
             BOT.register_next_step_handler(
                 respuesta,
