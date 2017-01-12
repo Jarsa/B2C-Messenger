@@ -8,14 +8,18 @@
                 <form string='description'>
                     <sheet>
                         <group>
-                            <field name='name'/>
-                            <field name='message_ids'/>
+                            <h1>
+                                <label attrs="{'invisible':[('name','=', False)]}" class="oe_inline" string="Campaign - " style="font-size:30px;"/>
+                                <field name='name' class='oe_inline' nolabel='1' placeholder='Campaign name' required='1'/>
+                            </h1>
+                        </group>
+                        <group>
+                            <field name='message_ids' nolabel='1'/>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
-
         <record id="action_btoc_campaign" model="ir.actions.act_window">
             <field name="name">Campaigns</field>
             <field name="res_model">btoc.campaign</field>

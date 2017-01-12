@@ -24,6 +24,7 @@
                                 <field name='skype_confidential'/>
                             </group>
                             <group string='Telegram'>
+                                <field name='telegram_id'/>
                                 <field name='telegram_confidential'/>
                                 <field name='telegram_confirm'/>
                             </group>

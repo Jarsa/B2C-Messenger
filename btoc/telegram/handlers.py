@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from openerp import SUPERUSER_ID
+from openerp import api, SUPERUSER_ID
 from telebot import types
 from openerp.modules.registry import RegistryManager
 from openerp.api import Environment
+from contextlib import closing
 
 _logger = logging.getLogger("[TELEGRAM_BOT]")
 
@@ -17,16 +18,16 @@ class TelegramBotHandlers(object):
         self.context = {}
         self.partner = {
             'telegram_id': '',
-            'razon_social': '',
-            'rfc': '',
-            'direccion': '',
+            'name': '',
+            'vat': '',
+            'contact_addresss': '',
             'regimen_fiscal': '',
             'notify_email': 'never',
         }
         self.r = RegistryManager.get('test')
         self.cr = self.r.cursor()
         Environment.reset()
-        self.env = Environment(self.cr, self.uid, context={})
+        self.env = Environment(self.cr, self.uid, self.context)
 
     def show_telebot_menu(self):
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
@@ -103,32 +104,30 @@ class TelegramBotHandlers(object):
                     reply_markup=markup)
 
         def process_rfc_step(message):
-            self.partner['razon_social'] = message.text
+            self.partner['name'] = message.text
             rfc = BOT.send_message(
                 message.chat.id,
                 'Capture RFC')
             BOT.register_next_step_handler(rfc, process_direccion_step)
 
         def process_direccion_step(message):
-            self.partner['rfc'] = message.text
+            self.partner['vat'] = message.text
             direccion = BOT.send_message(
                 message.chat.id, 'Capture direccion')
             BOT.register_next_step_handler(
                 direccion, process_regimen_fiscal_step)
 
         def process_regimen_fiscal_step(message):
-            self.partner['direccion'] = message.text
+            self.partner['contact_address'] = message.text
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-            reg1 = types.KeyboardButton('ASALARIADOS')
-            reg2 = types.KeyboardButton('HONORARIOS')
-            reg3 = types.KeyboardButton('ARRENDAMIENTO')
-            reg4 = types.KeyboardButton('ACTIVIDAD EMPRESARIAL')
-            reg5 = types.KeyboardButton('INCORPORACION FISCAL')
-            reg6 = types.KeyboardButton('PERSONA MORAL REGIMEN GENERAL')
-            reg7 = types.KeyboardButton('PERSONA MORAL FINES NO LUCRATIVOS')
-            markup.row(reg1, reg2)
-            markup.row(reg3, reg4)
-            markup.row(reg5, reg6, reg7)
+            with api.Environment.manage():
+                self.env = api.Environment(
+                      self.cr, self.uid, self.context)
+                with closing(self.env.cr):
+                    regimenes = self.env['account.fiscal.position'].search([])
+                    for regimen in regimenes:
+                        reg = types.KeyboardButton(str(regimen.name))
+                        markup.row(reg)
             regimen_fiscal = BOT.send_message(
                 message.chat.id,
                 'Seleccione un regimen fiscal', reply_markup=markup)
@@ -137,7 +136,7 @@ class TelegramBotHandlers(object):
                 process_validar_info_step)
 
         def process_validar_info_step(message):
-            self.partner['regimen_fiscal'] = message.text
+            self.partner['account_fiscal_position'] = 1
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')
             negativo = types.KeyboardButton('NO')
@@ -146,19 +145,25 @@ class TelegramBotHandlers(object):
                 message.chat.id,
                 '¿Son correctos estos datos?'
                 '\n\nRazon social: ' +
-                str(self.partner['razon_social']).encode('utf-8') +
+                str(self.partner['name']).encode('utf-8') +
                 '\nRFC :' +
-                str(self.partner['rfc']).encode('utf-8') +
+                str(self.partner['vat']).encode('utf-8') +
                 '\nDireccion: ' +
-                str(self.partner['direccion']).encode('utf-8') +
+                str(self.partner['contact_address']).encode('utf-8') +
                 '\n Regimen fiscal: ' +
-                str(self.partner['regimen_fiscal']).encode('utf-8'),
+                str(self.partner['account_fiscal_position']).encode('utf-8'),
                 reply_markup=markup)
             BOT.register_next_step_handler(
                 respuesta,
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
+            import ipdb; ipdb.set_trace()
+            with api.Environment.manage():
+                self.env = api.Environment(
+                    self.cr, self.uid, self.context)
+                with closing(self.env.cr):
+                    partner_id = self.env['res.partner'].create(self.partner)
             pdf = open(
                 '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
                 'telegram/extras/factura_electronica.pdf', 'rb')

@@ -10,14 +10,12 @@
                     <sheet>
                         <h1><field name='name' placeholder="Name"/></h1>
                         <group>
-                            <field name='campaign_id'/>
                             <field name='message'/>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
-
         <record id="message_kanban_view" model="ir.ui.view">
             <field name="name">btoc.message.kanban</field>
             <field name="model">btoc.message</field>
