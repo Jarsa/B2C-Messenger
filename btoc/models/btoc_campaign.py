@@ -11,3 +11,5 @@ class Campaign(models.Model):
     name = fields.Char(required=True)
     message_ids = fields.One2many(
         'btoc.message', 'campaign_id', string="Messages")
+    date = fields.Datetime(default=fields.Date.today())
+    

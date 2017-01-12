@@ -9,15 +9,15 @@ class Messenger(models.Model):
     _name = 'btoc.messenger'
 
     campaign_id = fields.Many2one(
-        'btoc.campaign', required=True, string="Campaign")
+        'btoc.campaign', string="Campaign")
     contact_ids = fields.Many2many(
-        'res.partner', string="Contact(s)", required=True)
+        'res.partner', string="Contact(s)")
     message_id = fields.Many2one(
-        'btoc.message', string="Message Name", required=True)
+        'btoc.message', string="Message Name")
     message = fields.Char(compute="_get_message")
     draft = fields.Boolean()
 
     @api.depends('message_id')
-    def _get_message(self):
+    def _compute_get_message(self):
         for rec in self:
             rec.message = rec.message_id.message

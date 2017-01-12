@@ -1,0 +1,40 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="group_form_view">
+            <field name="name">Group</field>
+            <field name="model">btoc.group</field>
+            <field name="arch" type="xml">
+                <form string='description'>
+                    <sheet>
+                        <group>
+                            <label attrs="{'invisible':[('name','=', False)]}" string="Group - " style="font-size:30px;"/>
+                            <h1>
+                                <field name='name' placeholder='Group name' required='1'/>
+                            </h1>
+                        </group>
+                        <group string='Users'>
+                            <field name='user_ids' nolabel='1'/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="group_tree_view">
+            <field name="name">group.tree</field>
+            <field name="model">btoc.group</field>
+            <field name="arch" type="xml">
+                <tree string="Group Tree">
+                    <field name="name"/>
+                    <field name='user_ids' widget="many2many_tags"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_btoc_group" model="ir.actions.act_window">
+            <field name="name">Group</field>
+            <field name="res_model">btoc.group</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>

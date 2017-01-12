@@ -9,10 +9,28 @@
                 <notebook position="inside">
                     <page string="Telegram">
                         <group>
-                            <group>
-                                <field name="telegram_id"/>
+                            <group string='Facebook'>
+                                <field name='facebook'/>
+                                <field name='facebook_confidential'/>
+                                <field name='facebook_confirm'/>
                             </group>
-                            <group>
+                            <group string='Sms'>
+                                <field name='sms_confirm'/>
+                                <field name='sms_confidential'/>
+                            </group>
+                            <group string='Skype'>
+                                <field name='skype'/>
+                                <field name='skype_confirm'/>
+                                <field name='skype_confidential'/>
+                            </group>
+                            <group string='Telegram'>
+                                <field name='telegram_id'/>
+                                <field name='telegram_confidential'/>
+                                <field name='telegram_confirm'/>
+                            </group>
+                            <group string='Whatsapp'>
+                                <field name='whatsapp_confidential'/>
+                                <field name='whatsapp_confirm'/>
                             </group>
                         </group>
                     </page>

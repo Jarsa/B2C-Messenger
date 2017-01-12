@@ -1,7 +1,7 @@
 <!-- <?xml version="1.0" encoding="UTF-8"?> -->
 <odoo>
     <data>
-        <menuitem icon="fa-truck" id="menu_btoc" name="B2C Panel control" sequence="10"/>
+        <menuitem icon="fa-truck" id="menu_btoc" name="B2C Panel" sequence="10"/>
         <!-- agenda -->
         <menuitem id="menu_btoc_agenda" name="Agenda" parent="menu_btoc" sequence="20"/>
         <menuitem id="menu_btoc_agenda_contact" name="Contacts" action='action_btoc_user' parent="menu_btoc_agenda"/>
@@ -11,7 +11,9 @@
         <menuitem id="menu_btoc_campaign_message" name="Messages" action='action_btoc_message' parent="menu_btoc_campaign"/>
         <!-- messenger -->
         <menuitem id="menu_btoc_messenger" name="Messenger Service" parent="menu_btoc" sequence="40"/>
-        <menuitem id="menu_btoc_messenger_message" name="Sending messages" action='action_btoc_messenger' parent="menu_btoc_messenger"/>
-        <menuitem id="menu_btoc_messenger_draft" name="Draft" action='' parent="menu_btoc_messenger"/>
+        <menuitem id="menu_btoc_messenger_message" name="Messages" action='action_btoc_messenger' parent="menu_btoc_messenger"/>
+        <!-- groups -->
+        <menuitem id="menu_btoc_groups" name="Groups" parent="menu_btoc" sequence="50"/>
+        <menuitem id="menu_btoc_agenda_contact" name="Groups" action='action_btoc_group' parent="menu_btoc_groups"/>
     </data>
 </odoo>
