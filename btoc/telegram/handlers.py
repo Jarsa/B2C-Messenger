@@ -144,11 +144,11 @@ class TelegramBotHandlers(object):
                 message.chat.id,
                 '¿Son correctos estos datos?'
                 '\n\nRazon social: ' +
-                str(self.partner['name']).encode('utf-8') +
+                self.partner['name'].encode('utf-8') +
                 '\nRFC :' +
-                str(self.partner['vat']).encode('utf-8') +
+                self.partner['vat'].encode('utf-8') +
                 '\nDireccion: ' +
-                str(self.partner['contact_address']).encode('utf-8') +
+                self.partner['contact_address'].encode('utf-8') +
                 '\n Regimen fiscal: ' +
                 str(self.partner['property_account_position_id']).encode('utf-8'),
                 reply_markup=markup)
@@ -157,12 +157,12 @@ class TelegramBotHandlers(object):
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
-            import ipdb; ipdb.set_trace()
             with api.Environment.manage():
                 self.env = api.Environment(
                     self.cr, self.uid, self.context)
                 with closing(self.env.cr):
-                    partner_id = self.env['res.partner'].create(self.partner)
+                    self.env['res.partner'].create(self.partner)
+                    self.env.cr.commit()
             pdf = open(
                 '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
                 'telegram/extras/factura_electronica.pdf', 'rb')

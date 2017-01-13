@@ -9,7 +9,7 @@ class Message(models.Model):
     _name = 'btoc.message'
 
     name = fields.Char(required=True)
-    message = fields.Html()
+    message = fields.Text()
     campaign_id = fields.Many2one(
         'btoc.campaign', required=True, string="Campaign")
     color = fields.Integer()

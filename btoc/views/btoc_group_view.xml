@@ -8,13 +8,17 @@
                 <form string='description'>
                     <sheet>
                         <group>
-                            <label attrs="{'invisible':[('name','=', False)]}" string="Group - " style="font-size:30px;"/>
                             <h1>
+                                <label attrs="{'invisible':[('name','=', False)]}" string="Group - " style="font-size:30px;"/>
                                 <field name='name' placeholder='Group name' required='1'/>
                             </h1>
                         </group>
-                        <group string='Users'>
-                            <field name='user_ids' nolabel='1'/>
+                        <group>
+                            <notebook>
+                                <page string='Users'>
+                                    <field name='user_ids' nolabel='1'/>
+                                </page>
+                            </notebook>
                         </group>
                     </sheet>
                 </form>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="btoc_individual_message_view" model="ir.ui.view">
+            <field name="name">Send group message</field>
+            <field name="model">btoc.group.message</field>
+            <field name="arch" type="xml">
+                <form string="Send group message">
+                    <group>
+                        <h1>
+                            <field name='group_ids'/>
+                        </h1>
+                    </group>
+                    <group string='Type your message below'>
+                        <field name='message' nolabel='1'/>
+                    </group>
+                    <footer>
+                        <button name="send_message" class="oe_highlight" string="Send" type="object"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="btoc_group_message_action" model="ir.actions.act_window">
+            <field name="name">Send group message</field>
+            <field name="res_model">btoc.group.message</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem action="btoc_group_message_action" id="btoc_group_message_menu" name="Send group message" parent="btoc.menu_btoc_messenger" sequence="8"/>
+    </data>
+</odoo>

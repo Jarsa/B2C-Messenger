@@ -22,6 +22,7 @@
         'views/btoc_group_view.xml',
         'views/btoc_views.xml',
         'wizards/btoc_individual_message_wizard.xml',
+        'wizards/btoc_group_message_wizard.xml',
     ],
     'installable': True,
 }
