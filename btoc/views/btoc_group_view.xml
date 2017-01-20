@@ -33,40 +33,6 @@
                 </tree>
             </field>
         </record>
-        <record id="group_kanban_view" model="ir.ui.view">
-            <field name="name">btoc.group.kanban</field>
-            <field name="model">btoc.group</field>
-            <field name="arch" type="xml">
-                <kanban default_group_by="color">
-                    <field name='color'/>
-                    <templates>
-                        <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                                <div class="oe_dropdown_kanban">
-                                    <div class="oe_dropdown_toggle">
-                                        <i class="fa fa-bars fa-lg"/>
-                                        <ul class="oe_dropdown_menu">
-                                            <li>
-                                                <a type="delete">Delete</a>
-                                            </li>
-                                            <li>
-                                                <ul class="oe_kanban_colorpicker" data-field="color"/>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="oe_clear"></div>
-                                </div>
-                                <div t-attf-class="oe_kanban_content">
-                                    <h3>
-                                        <field name="name"/>
-                                    </h3>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            </field>
-        </record>
         <record id="action_btoc_group" model="ir.actions.act_window">
             <field name="name">Group</field>
             <field name="res_model">btoc.group</field>

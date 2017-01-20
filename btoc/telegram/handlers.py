@@ -65,6 +65,7 @@ class TelegramBotHandlers(object):
                 reply_markup=markup)
 
         def process_rfc_select_step(message):
+            self.partner['telegram_id'] = message.chat.id
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             rfc1 = types.KeyboardButton('JUSA-790312-yh2')
             rfc2 = types.KeyboardButton('HMGR-821211-7er')
@@ -134,7 +135,6 @@ class TelegramBotHandlers(object):
                 process_validar_info_step)
 
         def process_validar_info_step(message):
-            self.partner['telegram_id'] = message.chat.id
             self.partner['property_account_position_id'] = 1
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')
@@ -150,31 +150,94 @@ class TelegramBotHandlers(object):
                 '\nDireccion: ' +
                 self.partner['contact_address'].encode('utf-8') +
                 '\n Regimen fiscal: ' +
-                str(self.partner['property_account_position_id']).encode('utf-8'),
+                str(self.partner['property_account_position_id']).
+                encode('utf-8'),
                 reply_markup=markup)
             BOT.register_next_step_handler(
                 respuesta,
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
-            with api.Environment.manage():
-                self.env = api.Environment(
-                    self.cr, self.uid, self.context)
-                with closing(self.env.cr):
-                    self.env['res.partner'].create(self.partner)
-                    self.env.cr.commit()
-            pdf = open(
-                '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
-                'telegram/extras/factura_electronica.pdf', 'rb')
-            xml = open(
-                '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
-                'telegram/extras/factura_electronica.xml', 'rb')
-            BOT.send_document(message.chat.id, pdf)
-            BOT.send_document(message.chat.id, xml)
-            BOT.send_message(
-                message.chat.id,
-                '¿Que accion deseas realizar?',
-                reply_markup=markup)
+            if message.text == 'SI':
+                with api.Environment.manage():
+                    self.env = api.Environment(
+                        self.cr, self.uid, self.context)
+                    with closing(self.env.cr):
+                        self.env['res.partner'].create(self.partner)
+                        self.env.cr.commit()
+                pdf = open(
+                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger'
+                    '/btoc/telegram/extras/factura_electronica.pdf', 'rb')
+                xml = open(
+                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger'
+                    '/btoc/telegram/extras/factura_electronica.xml', 'rb')
+                BOT.send_document(message.chat.id, pdf)
+                BOT.send_document(message.chat.id, xml)
+                BOT.send_message(
+                    message.chat.id,
+                    '¿Que accion deseas realizar?',
+                    reply_markup=self.markup)
+            else:
+                markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
+                rfc = types.KeyboardButton('RFC')
+                razon_social = types.KeyboardButton('RAZON SOCIAL')
+                direccion = types.KeyboardButton('DIRECCION')
+                regimen_fiscal = types.KeyboardButton('REGIMEN FISCAL')
+                markup.row(razon_social, rfc)
+                markup.row(regimen_fiscal, direccion)
+                dato_erroneo = BOT.send_message(
+                    message.chat.id,
+                    'Que dato es el que esta incorrecto?', reply_markup=markup)
+                BOT.register_next_step_handler(
+                    dato_erroneo, process_revalidar_info)
+
+        def process_revalidar_info(message):
+            if message.text == 'RAZON SOCIAL':
+                message = BOT.send_message(
+                    message.chat.id, 'Capture razon social')
+                BOT.register_next_step_handler(
+                    message,
+                    process_name_step)
+                self.partner['name'] = message.text
+            elif message.text == 'RFC':
+                message = BOT.send_message(
+                    message.chat.id, 'Capture rfc')
+                BOT.register_next_step_handler(
+                    message,
+                    process_vat_step)
+            elif message.text == 'DIRECCION':
+                message = BOT.send_message(
+                    message.chat.id, 'Capture direccion')
+                BOT.register_next_step_handler(
+                    message,
+                    process_contact_address_step)
+            else:
+                message = BOT.send_message(
+                    message.chat.id,
+                    'Capture regimen fiscal')
+                BOT.register_next_step_handler(
+                    message,
+                    process_property_account_step)
+
+        def process_name_step(message):
+            self.partner['name'] = message.text
+            BOT.register_next_step_handler(message, process_confirmacion_step)
+
+        def process_vat_step(message):
+            self.partner['name'] = message.text
+            BOT.register_next_step_handler(message, process_confirmacion_step)
+
+        def process_property_account_step(message):
+            self.partner['name'] = message.text
+            BOT.register_next_step_handler(message, process_confirmacion_step)
+
+        def process_contact_address_step(message):
+            self.partner['name'] = message.text
+            BOT.register_next_step_handler(message, process_confirmacion_step)
+
+        def process_name_step(message):
+            self.partner['name'] = message.text
+            BOT.register_next_step_handler(message, process_confirmacion_step)
 
         @BOT.message_handler(
             func=lambda message: message.text == '1.- Solicitar ticket')

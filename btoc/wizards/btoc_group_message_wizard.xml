@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Send group message">
                     <group string='To Groups: '>
-                        <field name='group_ids' nolabel='1' widget='many2many_kanban'/>
+                        <field name='group_ids' nolabel='1' widget='many2many_tags' required='1'/>
                     </group>
                     <group>
                         <notebook>

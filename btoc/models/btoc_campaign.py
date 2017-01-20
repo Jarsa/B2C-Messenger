@@ -31,6 +31,10 @@ class BtocCampaign(models.Model):
     color = fields.Integer()
     attachment_count = fields.Integer(
         compute='_compute_count_attachment')
+    message_sent = fields.Integer()
+    success_message = fields.Integer()
+    failed_message = fields.Integer()
+    users_reached = fields.Integer()
 
     @api.model
     def create(self, values):
@@ -60,9 +64,17 @@ class BtocCampaign(models.Model):
 
     @api.model
     def process_start_campaign(self):
-        campaigns = self.search([('schedule', '>=', fields.Datetime.now())])
+        campaigns = self.search([
+            ('schedule', '<=', fields.Datetime.now()),
+            ('state', '=', 'stand-by')])
         for campaign in campaigns:
             for group in campaigns.group_ids:
                 for user in group.user_ids:
-                    BOT.send_message(user.telegram_id, campaign.message)
-                    campaign.write({'state', '=', 'sent'})
+                    try:
+                        BOT.send_message(user.telegram_id, campaign.message)
+                        campaign.success_message += 1
+                        campaign.users_reached += 1
+                    except:
+                        campaign.failed_message += 1
+                    campaign.message_sent += 1
+            campaign.write({'state': 'sent'})

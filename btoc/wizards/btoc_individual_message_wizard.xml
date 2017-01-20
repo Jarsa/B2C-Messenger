@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Send individual message">
                     <group string='To: '>
-                        <field name='user_id' nolabel='1'/>
+                        <field name='user_id' nolabel='1' domain="([('telegram_id', '!=', '')])" required='1'/>
                     </group>
                     <group>
                         <notebook>

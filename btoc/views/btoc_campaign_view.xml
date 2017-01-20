@@ -18,7 +18,30 @@
                             <field class="oe_inline" name="next_departure" readonly="1"/></strong>
                         </p>
                     </div>
+                    <div attrs="{'invisible': [('state', '!=', 'sent')]}" class="oe_form_box_info oe_text_center">
+                        <p>
+                            <strong>This mass telegram was already sent</strong>
+                        </p>
+                    </div>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_inline oe_stat_button" type="action"
+                                       icon="fa-paper-plane-o">
+                                <field string="Sent" name="message_sent" widget="statinfo"/>
+                            </button>
+                            <button class="oe_inline oe_stat_button" type="action"
+                                       icon="fa-foursquare">
+                                <field string="Success" name="success_message" widget="statinfo"/>
+                            </button>
+                            <button class="oe_inline oe_stat_button" type="action"
+                                       icon="fa-exclamation">
+                                <field string="Failed" name="failed_message" widget="statinfo"/>
+                            </button>
+                           <button class="oe_inline oe_stat_button" type="action"
+                                       icon="fa-users">
+                                <field string="Reached" name="users_reached" widget="statinfo"/>
+                            </button>
+                        </div>
                         <label attrs="{'invisible':[('name','=', False)]}" class="oe_inline" string="Campaign" style="font-size:30px;"/>
                         <h1>
                             <field name="name" placeholder="Name"/>
@@ -35,7 +58,7 @@
                                 <group col="2" colspan="2" string="Telegram">
                                     <field attrs="{'readonly': [('state', '!=', 'draft')]}" name="schedule"/>
                                     <field name="creation_date" readonly="1"/>
-                                    <field name="sent_date" readonly="1"/>
+                                    <field name="sent_date" readonly="1" required="1"/>
                                 </group>
                             </page>
                         </notebook>
