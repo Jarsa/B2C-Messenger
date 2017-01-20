@@ -37,7 +37,6 @@
                 </notebook>
             </field>
         </record>
-
         <record model="ir.ui.view" id="partner_tree_view">
             <field name="name">Contacts.tree</field>
             <field name="model">res.partner</field>

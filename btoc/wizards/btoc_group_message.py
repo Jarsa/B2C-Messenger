@@ -10,8 +10,8 @@ from openerp.service.telegram import BOT
 class BtocGroupMessage(models.TransientModel):
     _name = 'btoc.group.message'
 
-    group_ids = fields.Many2one('btoc.group', string='Group')
-    message = fields.Text(size=200)
+    group_ids = fields.Many2many('btoc.group', string='Group')
+    message = fields.Text(size=200, required=True)
 
     @api.multi
     def send_message(self):

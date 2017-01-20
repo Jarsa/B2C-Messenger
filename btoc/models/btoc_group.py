@@ -12,3 +12,4 @@ class Group(models.Model):
     user_ids = fields.Many2many(
         'res.partner',
         string='Users')
+    color = fields.Integer()
