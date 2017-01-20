@@ -58,7 +58,6 @@ class TelegramBotHandlers(object):
 
         @BOT.message_handler(commands=['start'])
         def comando_bienvenida(message):
-            self.partner['telegram_id'] = message.chat.id
             chat_id = message.chat.id
             BOT.send_message(
                 chat_id,
@@ -135,6 +134,7 @@ class TelegramBotHandlers(object):
                 process_validar_info_step)
 
         def process_validar_info_step(message):
+            self.partner['telegram_id'] = message.chat.id
             self.partner['property_account_position_id'] = 1
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')

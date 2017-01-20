@@ -9,7 +9,7 @@ class BtocIndividualMessage(models.TransientModel):
     _name = 'btoc.individual.message'
 
     user_id = fields.Many2one('res.partner', string='User')
-    message = fields.Text(size=200)
+    message = fields.Text(size=200, required=True)
 
     @api.multi
     def send_message(self):
