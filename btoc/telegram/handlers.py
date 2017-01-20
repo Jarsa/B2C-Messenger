@@ -135,6 +135,7 @@ class TelegramBotHandlers(object):
                 process_validar_info_step)
 
         def process_validar_info_step(message):
+            self.partner['telegram_id'] = message.chat.id
             self.partner['property_account_position_id'] = 1
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')
