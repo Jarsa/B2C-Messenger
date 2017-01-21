@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <?xml version="1.0" encoding="utf-8"?>-->
+
 <odoo>
     <data>
         <record id="btoc_individual_message_view" model="ir.ui.view">
@@ -7,11 +8,7 @@
             <field name="arch" type="xml">
                 <form string="Send individual message">
                     <group string='To: '>
-<<<<<<< HEAD
                         <field name='user_id' nolabel='1' domain="([('telegram_id', '!=', '')])" required='1'/>
-=======
-                        <field name='user_id' nolabel='1'/>
->>>>>>> 68cf9ff322fffbda5c37eaf03f1eb1e11f004289
                     </group>
                     <group>
                         <notebook>

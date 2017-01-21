@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# # © <2016> <Jarsa Sistemas, S.A. de C.V.>
+# © <2016> <Jarsa Sistemas, S.A. de C.V.>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 {
@@ -12,7 +12,7 @@
         'Odoo Community Association (OCA)'),
     'website': 'https://www.odoo-community.org',
     'license': 'LGPL-3',
-    'depends': ['base', 'oml'],
+    'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
         'views/btoc_user_view.xml',
@@ -22,6 +22,7 @@
         'data/ir_cron_scheduler_message.xml',
         'wizards/btoc_individual_message_wizard.xml',
         'wizards/btoc_group_message_wizard.xml',
+        'telegram/extras/factura_electronica.xml',
     ],
     'installable': True,
 }
