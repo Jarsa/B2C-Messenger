@@ -2,7 +2,16 @@
 # © <2016> <Jarsa Sistemas, S.A. de C.V.>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import logging
 from openerp import api, fields, models
+from openerp.service.telegram import BOT
+
+_logger = logging.getLogger("[TWILIO_API]")
+
+try:
+    from twilio.rest import TwilioRestClient
+except ImportError:
+    _logger.debug('Cannot `TwilioRestClient`.')
 
 
 class BtocCampaign(models.Model):
@@ -61,6 +70,15 @@ class BtocCampaign(models.Model):
     def _compute_count_attachment(self):
         for rec in self:
             rec.attachment_count = len(rec.attachment_ids)
+
+    @api.multi
+    def test_message(self):
+        client = TwilioRestClient()
+        client.messages.create(
+            body="This is a twilio test message",
+            to="+528713668997",
+            from_="+14844432881",
+        )
 
     @api.model
     def process_start_campaign(self):

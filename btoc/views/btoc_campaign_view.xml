@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <form string="description">
                     <header>
-                        <button class="oe_highlight" states="draft, sending, sent" string="Test message" type="object"/>
+                        <button class="oe_highlight" states="draft, sending, sent" string="Test message" name='test_message' type="object"/>
                         <button class="oe_highlight" name="action_send_all" states="draft" string="Send to all" type="object"/>
                         <button class="oe_highlight" name="action_cancel" states="stand-by, sending" string="Cancel" type="object"/>
                         <field name="state" widget="statusbar"/>
@@ -59,7 +59,7 @@
                                 <group col="2" colspan="2" string="Telegram">
                                     <field attrs="{'readonly': [('state', '!=', 'draft')]}" name="schedule"/>
                                     <field name="creation_date" readonly="1"/>
-                                    <field name="sent_date" readonly="1" required="1"/>
+                                    <field name="sent_date" required="1"/>
                                 </group>
                             </page>
                         </notebook>

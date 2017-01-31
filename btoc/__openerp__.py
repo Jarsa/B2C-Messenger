@@ -22,7 +22,6 @@
         'data/ir_cron_scheduler_message.xml',
         'wizards/btoc_individual_message_wizard.xml',
         'wizards/btoc_group_message_wizard.xml',
-        'telegram/extras/factura_electronica.xml',
     ],
     'installable': True,
 }

@@ -4,6 +4,7 @@
 
 from openerp import _, api, fields, models
 from openerp.exceptions import ValidationError
+from openerp.service.telegram import BOT
 
 
 class BtocGroupMessage(models.TransientModel):
