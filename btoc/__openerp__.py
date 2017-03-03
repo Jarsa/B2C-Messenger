@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# # © <2016> <Jarsa Sistemas, S.A. de C.V.>
+# © <2016> <Jarsa Sistemas, S.A. de C.V.>
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl.html).
 
 {
@@ -17,11 +17,11 @@
         'security/ir.model.access.csv',
         'views/btoc_user_view.xml',
         'views/btoc_campaign_view.xml',
-        'views/btoc_message_view.xml',
-        'views/btoc_messenger_view.xml',
         'views/btoc_group_view.xml',
         'views/btoc_views.xml',
+        'data/ir_cron_scheduler_message.xml',
         'wizards/btoc_individual_message_wizard.xml',
+        'wizards/btoc_group_message_wizard.xml',
     ],
     'installable': True,
 }

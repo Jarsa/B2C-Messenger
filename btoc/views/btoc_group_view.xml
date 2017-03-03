@@ -1,32 +1,36 @@
-<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<!-- <?xml version="1.0" encoding="utf-8"?>-->
+
 <odoo>
     <data>
-        <record model="ir.ui.view" id="group_form_view">
-            <field name="name">Group</field>
+        <record id="group_form_view" model="ir.ui.view">
+            <field name="name">btoc.group.form</field>
             <field name="model">btoc.group</field>
             <field name="arch" type="xml">
-                <form string='description'>
+                <form string="description">
                     <sheet>
                         <group>
-                            <label attrs="{'invisible':[('name','=', False)]}" string="Group - " style="font-size:30px;"/>
                             <h1>
-                                <field name='name' placeholder='Group name' required='1'/>
+                                <field name="name" placeholder="Group name" required="1"/>
                             </h1>
                         </group>
-                        <group string='Users'>
-                            <field name='user_ids' nolabel='1'/>
+                        <group>
+                            <notebook>
+                                <page string='Users'>
+                                    <field name='user_ids' nolabel='1'/>
+                                </page>
+                            </notebook>
                         </group>
                     </sheet>
                 </form>
             </field>
         </record>
-        <record model="ir.ui.view" id="group_tree_view">
-            <field name="name">group.tree</field>
+        <record id="group_tree_view" model="ir.ui.view">
+            <field name="name">btoc.group.kanban</field>
             <field name="model">btoc.group</field>
             <field name="arch" type="xml">
                 <tree string="Group Tree">
                     <field name="name"/>
-                    <field name='user_ids' widget="many2many_tags"/>
+                    <field name='user_ids' widget="many2many_widget"/>
                 </tree>
             </field>
         </record>
