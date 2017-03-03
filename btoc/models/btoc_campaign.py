@@ -44,6 +44,8 @@ class BtocCampaign(models.Model):
     success_message = fields.Integer()
     failed_message = fields.Integer()
     users_reached = fields.Integer()
+    telegram = fields.Boolean()
+    sms = fields.Boolean()
 
     @api.model
     def create(self, values):

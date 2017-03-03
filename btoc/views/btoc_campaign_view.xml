@@ -45,21 +45,27 @@
                         </div>
                         <label attrs="{'invisible':[('name','=', False)]}" class="oe_inline" string="Campaign" style="font-size:30px;"/>
                         <h1>
-                            <field name="name" placeholder="Name"/>
+                            <field name="name" placeholder="Name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </h1>
                         <group>
-                            <field name="group_ids" widget="many2many_tags"/>
-                            <field name="attachment_ids" widget="many2many_binary"/>
+                            <field name="group_ids" widget="many2many_tags" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="attachment_ids" widget="many2many_binary" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                         </group>
                         <notebook>
                             <page string="Text message">
-                                <field name="message" required="1"/>
+                                <field name="message" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                             </page>
                             <page string="Options">
-                                <group col="2" colspan="2" string="Telegram">
-                                    <field attrs="{'readonly': [('state', '!=', 'draft')]}" name="schedule"/>
-                                    <field name="creation_date" readonly="1"/>
-                                    <field name="sent_date" required="1"/>
+                                <group col='2' colspan='2'>
+                                    <group string="Telegram">
+                                        <field attrs="{'readonly': [('state', '!=', 'draft')]}" name="schedule"/>
+                                        <field name="creation_date" readonly="1"/>
+                                        <field name="sent_date" readonly="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </group>
+                                    <group string='Via'>
+                                        <field name='telegram' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                        <field name='sms' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    </group>
                                 </group>
                             </page>
                         </notebook>
