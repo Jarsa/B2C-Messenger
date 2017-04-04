@@ -123,13 +123,16 @@ class TelegramBotHandlers(object):
         def process_regimen_fiscal_step(message):
             self.partner['contact_address'] = message.text
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-            with api.Environment.manage():
-                self.env = api.Environment(
-                    self.cr, self.uid, self.context)
-                regimenes = self.env['account.fiscal.position'].search([])
-                for regimen in regimenes:
-                    reg = types.KeyboardButton(str(regimen.name))
-                    markup.row(reg)
+            reg1 = types.KeyboardButton('ASALARIADOS')
+            reg2 = types.KeyboardButton('HONORARIOS')
+            reg3 = types.KeyboardButton('ARRENDAMIENTO')
+            reg4 = types.KeyboardButton('ACTIVIDAD EMPRESARIAL')
+            reg5 = types.KeyboardButton('INCORPORACION FISCAL')
+            reg6 = types.KeyboardButton('PERSONA MORAL REGIMEN GENERAL')
+            reg7 = types.KeyboardButton('PERSONA MORAL FINES NO LUCRATIVOS')
+            markup.row(reg1, reg2, reg3)
+            markup.row(reg4, reg5, reg6)
+            markup.row(reg7)
             regimen_fiscal = BOT.send_message(
                 message.chat.id,
                 'Seleccione un regimen fiscal', reply_markup=markup)
@@ -163,12 +166,6 @@ class TelegramBotHandlers(object):
 
         def process_confirmacion_step(message):
             if message.text == 'SI':
-                with api.Environment.manage():
-                    self.env = api.Environment(
-                        self.cr, self.uid, self.context)
-                    with closing(self.env.cr):
-                        self.env['res.partner'].create(self.partner)
-                        self.env.cr.commit()
                 pdf = open(
                     '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger'
                     '/btoc/telegram/extras/factura_electronica.pdf', 'rb')
@@ -180,7 +177,7 @@ class TelegramBotHandlers(object):
                 BOT.send_message(
                     message.chat.id,
                     '¿Que accion deseas realizar?',
-                    reply_markup=self.markup)
+                    reply_markup=self.show_telebot_menu())
             else:
                 markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
                 rfc = types.KeyboardButton('RFC')
