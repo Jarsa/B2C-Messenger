@@ -9,7 +9,7 @@
                 <notebook position="inside">
                     <page string="Telegram">
                         <group>
-                            <group string='Facebook'>
+                        <!--<group string='Facebook'>
                                 <field name='facebook'/>
                                 <field name='facebook_confidential'/>
                                 <field name='facebook_confirm'/>
@@ -31,7 +31,7 @@
                             <group string='Whatsapp'>
                                 <field name='whatsapp_confidential'/>
                                 <field name='whatsapp_confirm'/>
-                            </group>
+                            </group>-->
                         </group>
                     </page>
                 </notebook>
