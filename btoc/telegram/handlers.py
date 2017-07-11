@@ -235,6 +235,7 @@ class TelegramBotHandlers(object):
             self.partner['contact_address'] = message.text
             BOT.register_next_step_handler(message, process_confirmacion_step)
 
+
         @BOT.message_handler(
             func=lambda message: message.text == '1.- Solicitar ticket')
         def handle_realizar_encuesta(message):
