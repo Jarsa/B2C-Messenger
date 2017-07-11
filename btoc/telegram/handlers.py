@@ -93,11 +93,11 @@ class TelegramBotHandlers(object):
             else:
                 pdf = open(
                     '/home/hector/Documentos/'
-                    'Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'jarsa/B2C-Messenger/btoc/'
                     'telegram/extras/factura_electronica.pdf', 'rb')
                 xml = open(
                     '/home/hector/Documentos/'
-                    'Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'jarsa/B2C-Messenger/btoc/'
                     'telegram/extras/factura_electronica.xml', 'rb')
                 BOT.send_document(message.chat.id, pdf)
                 BOT.send_document(message.chat.id, xml)
@@ -142,7 +142,7 @@ class TelegramBotHandlers(object):
 
         def process_validar_info_step(message):
             self.partner['telegram_id'] = message.chat.id
-            self.partner['property_account_position_id'] = 1
+            self.partner['property_account_position_id'] = message.text
             markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
             afirmativo = types.KeyboardButton('SI')
             negativo = types.KeyboardButton('NO')
@@ -165,12 +165,12 @@ class TelegramBotHandlers(object):
                 process_confirmacion_step)
 
         def process_confirmacion_step(message):
-            if message.text == 'SI':
+            if message.text == 'SI' or message.text == 'Si' or message.text == 'si':
                 pdf = open(
-                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger'
+                    '/home/hector/Documentos/jarsa/B2C-Messenger'
                     '/btoc/telegram/extras/factura_electronica.pdf', 'rb')
                 xml = open(
-                    '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger'
+                    '/home/hector/Documentos/jarsa/B2C-Messenger'
                     '/btoc/telegram/extras/factura_electronica.xml', 'rb')
                 BOT.send_document(message.chat.id, pdf)
                 BOT.send_document(message.chat.id, xml)
@@ -199,7 +199,6 @@ class TelegramBotHandlers(object):
                 BOT.register_next_step_handler(
                     message,
                     process_name_step)
-                self.partner['name'] = message.text
             elif message.text == 'RFC':
                 message = BOT.send_message(
                     message.chat.id, 'Capture rfc')
@@ -225,26 +224,22 @@ class TelegramBotHandlers(object):
             BOT.register_next_step_handler(message, process_confirmacion_step)
 
         def process_vat_step(message):
-            self.partner['name'] = message.text
+            self.partner['vat'] = message.text
             BOT.register_next_step_handler(message, process_confirmacion_step)
 
         def process_property_account_step(message):
-            self.partner['name'] = message.text
+            self.partner['property_account_position_id'] = message.text
             BOT.register_next_step_handler(message, process_confirmacion_step)
 
         def process_contact_address_step(message):
-            self.partner['name'] = message.text
-            BOT.register_next_step_handler(message, process_confirmacion_step)
-
-        def process_name_step(message):
-            self.partner['name'] = message.text
+            self.partner['contact_address'] = message.text
             BOT.register_next_step_handler(message, process_confirmacion_step)
 
         @BOT.message_handler(
             func=lambda message: message.text == '1.- Solicitar ticket')
         def handle_realizar_encuesta(message):
             ticket = open(
-                '/home/hector/Documentos/Jarsa_sistemas/B2C-Messenger/btoc/'
+                '/home/hector/Documentos/jarsa/B2C-Messenger/btoc/'
                 'telegram/extras/Picture1.jpg', 'rb')
             markup = self.show_rating_menu()
             BOT.send_photo(message.chat.id, ticket)
@@ -281,17 +276,17 @@ class TelegramBotHandlers(object):
             if promocion == 'Linea Blanca':
                 imagen = open(
                     '/home/hector/Documentos/'
-                    'Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'jarsa/B2C-Messenger/btoc/'
                     'telegram/extras/Linea Blanca_opt.jpg', 'rb')
             elif promocion == 'Electronica':
                 imagen = open(
                     '/home/hector/Documentos/'
-                    'Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'jarsa/B2C-Messenger/btoc/'
                     'telegram/extras/electronica_opt.jpg', 'rb')
             else:
                 imagen = open(
                     '/home/hector/Documentos/'
-                    'Jarsa_sistemas/B2C-Messenger/btoc/'
+                    'jarsa/B2C-Messenger/btoc/'
                     'telegram/extras/ropa_opt.jpg', 'rb')
             BOT.send_photo(message.chat.id, imagen)
             BOT.send_message(
