@@ -92,11 +92,11 @@ class TelegramBotHandlers(object):
                     process_rfc_step)
             else:
                 pdf = open(
-                    '/home/odoo-9.0/B2C-Messenger/
+                    '/home/odoo-9.0/B2C-Messenger/'
                     'btoc/telegram/extras/'
                     'factura_electronica.pdf', 'rb')
                 xml = open(
-                    '/home/odoo-9.0/B2C-Messenger/
+                    '/home/odoo-9.0/B2C-Messenger/'
                     'btoc/telegram/extras/'
                     'factura_electronica.xml', 'rb')
                 BOT.send_document(message.chat.id, pdf)
