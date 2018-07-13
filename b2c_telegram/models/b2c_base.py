@@ -10,6 +10,14 @@ class B2CBase(models.Model):
 
     provider = fields.Selection(selection_add=[("telegram", "Telegram")])
 
-    def set_actions(self):
-        import ipdb; ipdb.set_trace()
-        print('hi')
+    def set_actions(self, method, token):
+        bot_active = self.search([('token', '=', token)])
+        action = bot_active.workflow_ids.with_context(
+            action=method).filtered(lambda a: a.handler == a.action)
+
+        print("""   ( ( (
+                     ) ) )
+                    ( ( (
+                  '. ___ .'
+                 '  (> <) '
+         --------ooO-(_)-Ooo----------""")

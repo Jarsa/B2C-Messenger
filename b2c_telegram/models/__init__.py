@@ -8,8 +8,9 @@ import psycopg2
 from odoo import sql_db
 from odoo.service import db, server
 from odoo.tools import config
-from telegram.ext import CommandHandler, Updater
+from telegram.ext import *
 
+from . import res_partner
 from . import b2c_base, b2c_bot
 from .b2c_bot import B2CBotTelegram
 

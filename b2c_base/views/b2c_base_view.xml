@@ -64,6 +64,7 @@
                         <button class="oe_stat_button" icon="fa-archive" name="toggle_active" type="object">
                             <field name="active" options="{&quot;terminology&quot;: &quot;archive&quot;}" widget="boolean_button"/>
                         </button>
+                        <button name="set_actions" type="object" string="Actions" icon="fa-sitemap"/>
                     </div>
                     <div>
                         <div>
@@ -81,7 +82,6 @@
                         <field name="token"/>
                     </group>
                     <group string="Workflow">
-                        <button name="set_actions" type="object" string="Actions"/>
                         <field name="workflow_ids" nolabel="1">
                             <tree editable="top">
                                 <field name="handler"/>
