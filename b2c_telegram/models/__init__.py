@@ -12,6 +12,7 @@ from telegram.ext import *
 
 from . import res_partner
 from . import b2c_base, b2c_bot
+from . import b2c_workflow
 from .b2c_bot import B2CBotTelegram
 
 _logger = logging.getLogger(__name__)

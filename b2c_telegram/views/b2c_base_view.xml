@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="view_b2c_base_form_telegram" model="ir.ui.view">
+        <field name="name">view.b2c.base.telegra.form</field>
+        <field name="model">b2c.base</field>
+        <field name="inherit_id" ref="b2c_base.view_b2c_base_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='workflow_ids']" position="attributes">
+                <attribute name="domain">[('provider', '=', provider)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

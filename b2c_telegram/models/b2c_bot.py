@@ -18,12 +18,15 @@ _logger = logging.getLogger(__name__)
 
 class B2CBotTelegram(B2CBot):
 
-    def e_method(self, method):
+    def get_bot(self):
+        return Updater(self.token)
+
+    def e_method(self, handler, bot, update):
         db_registry = registry(config['db_name'])
         with api.Environment.manage(), db_registry.cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             b2c_base = env['b2c.base']
-            b2c_base.set_actions(method, self.token)
+            b2c_base.set_actions(handler, self.token, bot, update)
 
     def start(self, bot, update):
         bot_id = update.message.from_user.id
@@ -38,13 +41,12 @@ class B2CBotTelegram(B2CBot):
                     'name': name,
                     'bot_id': bot_id,
                 })
-        update.message.reply_text(
-            'Hello' + name)
+        self.e_method('/start', bot, update)
 
     def listener(self, bot, update):
         chat_id = update.message.chat_id
         message = update.message.text
-        self.e_method(message)
+        self.e_method(message, bot, update)
         print('ID: ' + str(chat_id) + ' Message: ' + message)
 
     def start_polling(self):
@@ -65,6 +67,3 @@ class B2CBotTelegram(B2CBot):
         _logger.info(
             "Graceful stop requested. STelegram Bot with token %s stopped." % (
                 self.token))
-
-    def create_handler(self, handler, action, dp):
-        dp.add_handler(CommandHandler(handler, action))

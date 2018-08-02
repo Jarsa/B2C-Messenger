@@ -64,28 +64,27 @@
                         <button class="oe_stat_button" icon="fa-archive" name="toggle_active" type="object">
                             <field name="active" options="{&quot;terminology&quot;: &quot;archive&quot;}" widget="boolean_button"/>
                         </button>
-                        <button name="set_actions" type="object" string="Actions" icon="fa-sitemap"/>
+                        <button icon="fa-sitemap" name="set_workflows" string="Workflows" type="object"/>
                     </div>
                     <div>
-                        <div>
-                            <field class="oe_avatar" name="image" options="{&quot;preview_image&quot;:&quot;image&quot;}" widget="image"/>
-                            <div class="oe_title">
-                                <label class="oe_edit_only" for="name"/>
-                                <h1>
-                                    <field name="name" required="True"/>
-                                </h1>
-                            </div>
+                        <field class="oe_avatar" name="image" nolabel="1" options="{&quot;preview_image&quot;:&quot;image&quot;}" widget="image"/>
+                        <div class="oe_title">
+                            <label class="oe_edit_only" for="name"/>
+                            <h1>
+                                <field class="oe_inline" name="name"/>
+                            </h1>
                         </div>
                     </div>
                     <group>
-                        <field name="provider"/>
-                        <field name="token"/>
+                        <group>
+                            <field name="provider"/>
+                            <field name="token"/>
+                        </group>
                     </group>
-                    <group string="Workflow">
-                        <field name="workflow_ids" nolabel="1">
-                            <tree editable="top">
-                                <field name="handler"/>
-                                <field name="action"/>
+                    <group string="Workflows">
+                        <field name="workflow_ids" nolabel="1" context="{'default_provider': provider}">
+                            <tree>
+                                <field name="name"/>
                             </tree>
                         </field>
                     </group>

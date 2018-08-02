@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id="view_b2c_workflow_line_form" model="ir.ui.view">
+        <field name="name">view.b2c.workflow.line.form</field>
+        <field name="model">b2c.workflow.line</field>
+        <field name="arch" type="xml">
+            <form stacked="False" string="b2c Base">
+                <sheet>
+                    <div>
+                        <div>
+                            <div class="oe_title">
+                                <label class="oe_edit_only" for="name"/>
+                                <h1>
+                                    <field name="name" required="True"/>
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="provider" invisible="1"/>
+                            <field name="handler"/>
+                            <field name="action"/>
+                            <field attrs="{'invisible': [('action', '!=', 'code')], 'required': [('action', '=', 'code')]}" name="model_id" options="{'no_open': 1, 'no_create': 1, 'no_create_edit': 1}"/>
+                            <field name="file_name" invisible="1"/>
+                            <field filename="file_name" name="attachment"/>
+                        </group>
+                        <group>
+                            <field name="workflow_id" invisible="1"/>
+                            <field name="previus_step_id" options="{'no_create': 1, 'no_create_edit': 1}"  domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]"/>
+                            <field name="next_step_id" options="{'no_create': 1, 'no_create_edit': 1}" domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]"/>
+                            <field name="delay"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+                            <page attrs="{'invisible': [('action', '!=', 'code')]}" autofocus="autofocus" string="Python Code">
+                                <field name="code" options="{'mode': 'python'}" placeholder="Enter Python code here. Help about Python expression is available in the help tab of this document." widget="ace"/>
+                            </page>
+                            <page autofocus="autofocus" string="Message">
+                                <field name="message"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

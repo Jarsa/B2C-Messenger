@@ -8,11 +8,3 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     bot_id = fields.Char()
-
-    # def search_partner(self, bot_id, name):
-    #     partner = self.search([('bot_id', '=', bot_id)])
-    #     if not partner:
-    #         self.create({
-    #             'name': name,
-    #             'bot_id': bot_id,
-    #         })

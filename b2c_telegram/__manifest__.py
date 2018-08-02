@@ -13,6 +13,9 @@
     'external_dependencies': {
     },
     'depends': ['b2c_base'],
-    'data': [],
+    'data': [
+        'views/b2c_workflow_line_view.xml',
+        'views/b2c_base_view.xml',
+    ],
     'demo': [],
 }
