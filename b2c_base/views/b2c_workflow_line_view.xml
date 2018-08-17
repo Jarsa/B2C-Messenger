@@ -18,17 +18,18 @@
                     </div>
                     <group>
                         <group>
-                            <field name="provider" invisible="1"/>
+                            <field invisible="1" name="provider"/>
                             <field name="handler"/>
                             <field name="action"/>
                             <field attrs="{'invisible': [('action', '!=', 'code')], 'required': [('action', '=', 'code')]}" name="model_id" options="{'no_open': 1, 'no_create': 1, 'no_create_edit': 1}"/>
-                            <field name="file_name" invisible="1"/>
+                            <field invisible="1" name="file_name"/>
                             <field filename="file_name" name="attachment"/>
                         </group>
                         <group>
-                            <field name="workflow_id" invisible="1"/>
-                            <field name="previus_step_id" options="{'no_create': 1, 'no_create_edit': 1}"  domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]"/>
-                            <field name="next_step_id" options="{'no_create': 1, 'no_create_edit': 1}" domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]"/>
+                            <field invisible="1" name="workflow_id"/>
+                            <field domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]" name="previus_step_id" options="{'no_create': 1, 'no_create_edit': 1}"/>
+                            <field domain="[('id', '!=', active_id), ('workflow_id', '=', workflow_id)]" name="next_step_id" options="{'no_create': 1, 'no_create_edit': 1}"/>
+                            <field name="wait_user_response"/>
                             <field name="delay"/>
                             <field name="sequence"/>
                         </group>
@@ -46,5 +47,39 @@
                 </sheet>
             </form>
         </field>
+    </record>
+    <record id="view_b2c_workflow_line_search" model="ir.ui.view">
+        <field name="name">view.b2c.workflow.line.search</field>
+        <field name="model">b2c.workflow.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter context="{'group_by': 'workflow_id'}" name="workflow_group_by" string="Workflow"/>
+            </search>
+        </field>
+    </record>
+    <record id="view_b2c_workflow_line_tree" model="ir.ui.view">
+        <field name="name">view.b2c.workflow.line.tree</field>
+        <field name="model">b2c.workflow.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="provider"/>
+                <field name="handler"/>
+                <field name="message"/>
+                <field name="action"/>
+                <field name="previus_step_id"/>
+                <field name="next_step_id"/>
+                <field name="sequence"/>
+                <field name="delay"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_b2c_workflow_line" model="ir.actions.act_window">
+        <field name="name">Workflow Line</field>
+        <field name="res_model">b2c.workflow.line</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form,tree,search</field>
+        <field name="context"/>
     </record>
 </odoo>

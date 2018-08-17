@@ -49,11 +49,18 @@ class B2CBotTelegram(B2CBot):
         self.e_method(message, bot, update)
         print('ID: ' + str(chat_id) + ' Message: ' + message)
 
+    def button(self, bot, update):
+        query = update.callback_query
+        chat_id = query.message.chat_id
+        message = query.data
+        self.e_method(message, bot, update)
+
     def start_polling(self):
         token = self.token
         updater = Updater(token)
         dp = updater.dispatcher
         dp.add_handler(CommandHandler("start", self.start))
+        dp.add_handler(CallbackQueryHandler(self.button))
         dp.add_handler(MessageHandler(Filters.text, self.listener))
 
         # Start the Bot

@@ -15,20 +15,20 @@
                         </div>
                     </div>
                     <group>
-                          <field invisible="0" name="provider"/>
+                        <field invisible="0" name="provider"/>
                     </group>
                     <group string="Steps">
-                        <field name="step_line_ids" context="{'default_provider': provider}" nolabel="1">
+                        <field context="{'default_provider': provider}" name="step_line_ids" nolabel="1">
                             <tree>
                                 <field name="name"/>
+                                <field name="provider"/>
                                 <field name="handler"/>
-                                <field name="delay"/>
                                 <field name="message"/>
-                                <field name="action"></field>
-                                <field name="previus_step_id"></field>
-                                <field name="next_step_id"></field>
-                                <field name="provider"></field>
-                                <field name="sequence"></field>
+                                <field name="action"/>
+                                <field name="previus_step_id"/>
+                                <field name="next_step_id"/>
+                                <field name="sequence"/>
+                                <field name="delay"/>
                             </tree>
                         </field>
                     </group>

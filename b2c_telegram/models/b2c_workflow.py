@@ -17,7 +17,18 @@ class B2CWorkflowLine(models.Model):
         ('texts', 'Texts'),
         ('selection', 'Selection'),
         ('image', 'Image'),
-        ('attachment', 'Attachment')], string='Telegram Action',
+        ('attachment', 'Attachment'),
+        ('video', 'Video'),
+        ('audio', 'Audio')], string='Telegram Action',
         default='texts', required=True,)
     image = fields.Binary(string='Image', attachment=True)
+    text_in_chat = fields.Boolean(
+        string='Text of Seleccion in Chat',
+    )
     provider = fields.Selection(selection_add=[("telegram", "Telegram")],)
+    element_keyboard = fields.Integer(
+        string='Quntity of element for Keyboard',
+        default=3
+    )
+    send_location = fields.Boolean(string='Is Location',)
+    send_contact = fields.Boolean(string='Is Contact',)

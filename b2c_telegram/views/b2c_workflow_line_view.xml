@@ -10,9 +10,13 @@
             </xpath>
             <xpath expr="//field[@name='model_id']" position="before">
                 <field name="telegram_action"/>
+                <field name="element_keyboard" attrs="{'invisible': [('telegram_action', '!=', 'selection')]}"/>
+                <field name="send_location" attrs="{'invisible': [('telegram_action', '!=', 'texts')]}"></field>
+                <field name="send_contact" attrs="{'invisible': ['|', ('telegram_action', '!=', 'texts'), ('send_location', '=', True)]}"></field>
+                <field name="text_in_chat" attrs="{'invisible': ['|', ('telegram_action', 'not in', ['image', 'attachment', 'video', 'audio']), ('action', '!=', 'code')]}"></field>
             </xpath>
             <xpath expr="//field[@name='attachment']" position="attributes">
-                <attribute name="attrs">{'invisible': [('telegram_action', '!=', 'attachment')]}</attribute>
+                <attribute name="attrs">{'invisible': [('telegram_action', 'not in', ['attachment', 'video', 'audio'])]}</attribute>
             </xpath>
         </field>
     </record>

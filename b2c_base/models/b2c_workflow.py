@@ -68,19 +68,20 @@ class B2CWorkflowLine(models.Model):
     file_name = fields.Char('File Name')
     provider = fields.Selection([])
     sequence = fields.Integer()
+    wait_user_response = fields.Boolean()
 
     @api.multi
-    def method_direct_trigger(self):
+    def method_direct_trigger(self, data):
         self.check_access_rights('write')
         for b2c in self:
-            res = self.sudo(user=self.env.user.id).run()
+            res = self.sudo(user=self.env.user.id).run(data)
         return res
 
     @api.multi
-    def run(self):
+    def run(self, data):
         res = False
         for action in self:
-            eval_context = self._get_eval_context(action)
+            eval_context = self._get_eval_context(action, data)
             if hasattr(self, 'run_action_%s_multi' % action.action):
                 # call the multi method
                 run_self = self.with_context(eval_context['env'].context)
@@ -89,7 +90,7 @@ class B2CWorkflowLine(models.Model):
         return eval_context['res']
 
     @api.model
-    def _get_eval_context(self, action=None):
+    def _get_eval_context(self, action=None, data=None):
         def log(message, level="info"):
             with self.pool.cursor() as cr:
                 cr.execute("""
@@ -106,9 +107,11 @@ class B2CWorkflowLine(models.Model):
         model = self.env[model_name]
         record = None
         records = None
-        if self._context.get('active_model') == model_name and self._context.get('active_id'):
+        if (self._context.get('active_model') ==
+                model_name and self._context.get('active_id')):
             record = model.browse(self._context['active_id'])
-        if self._context.get('active_model') == model_name and self._context.get('active_ids'):
+        if (self._context.get('active_model') ==
+                model_name and self._context.get('active_ids')):
             records = model.browse(self._context['active_ids'])
         if self._context.get('onchange_self'):
             record = self._context['onchange_self']
@@ -120,6 +123,9 @@ class B2CWorkflowLine(models.Model):
             'records': records,
             'log': log,
             'res': None,
+            'partner': self.env['res.partner'].search([
+                ('bot_id', '=', data['chat_id'])]),
+            'handler': data['handler'],
             'b2c_model': self.env['b2c.base'],
         })
         return eval_context
