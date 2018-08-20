@@ -12,11 +12,15 @@
     'installable': True,
     'external_dependencies': {
     },
-    'depends': [],
+    'depends': [
+        'sale_subscription',
+    ],
     'data': [
         'views/b2c_base_view.xml',
+        'views/b2c_chat_view.xml',
         'views/b2c_workflow_view.xml',
         'views/b2c_workflow_line_view.xml',
+        'views/sale_subscription_view.xml',
     ],
     'demo': [],
 }

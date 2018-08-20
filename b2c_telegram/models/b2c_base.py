@@ -17,7 +17,7 @@ class B2CBase(models.Model):
     provider = fields.Selection(selection_add=[("telegram", "Telegram")])
 
     def create_text_telegram(self, data):
-        if data['items'] and data['send_location']:
+        if data.get('items') and data['send_location']:
             address = self.get_coordinates(
                 data['items']['name'],
                 data['items']['state'],

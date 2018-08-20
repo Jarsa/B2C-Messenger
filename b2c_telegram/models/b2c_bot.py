@@ -3,7 +3,6 @@
 
 import logging
 
-import odoorpc
 import telegram
 
 from odoo.tools import config

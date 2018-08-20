@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_subscription_b2c_base" model="ir.ui.view">
+        <field name="name">sale.subscription.b2c.base</field>
+        <field name="model">sale.subscription</field>
+        <field name="inherit_id" ref="sale_subscription.sale_subscription_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="is_bot"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>

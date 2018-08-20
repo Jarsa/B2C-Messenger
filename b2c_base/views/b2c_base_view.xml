@@ -86,6 +86,7 @@
                         <group>
                             <field name="provider"/>
                             <field name="token"/>
+                            <field name="subscription_id"/>
                         </group>
                     </group>
                     <group string="Workflows">

@@ -39,6 +39,10 @@ class B2CBase(models.Model):
         'b2c.workflow.line',
         string='Last Workflow',
     )
+    subscription_id = fields.Many2one(
+        'sale.subscription',
+        string='Sale Subscription',
+    )
 
     @api.multi
     def action_set_active(self):
@@ -71,6 +75,21 @@ class B2CBase(models.Model):
     @api.model
     def get_actions(self, action, token, bot, update, handler=''):
         data_bot = self.environment_variables(update)
+        obj_chat = self.env['b2c.chat']
+        chat_id = obj_chat.search([('chat_id', '=', data_bot['chat_id'])])
+        if not chat_id:
+            chat_id = obj_chat.create({
+                'chat_id': data_bot['chat_id'],
+                'provider': action.provider,
+                'workflow_id': action.workflow_id.id,
+                'bot_token': self.token,
+            })
+        if handler:
+            chat_id.message_post(
+                body=handler)
+        if action.message:
+            chat_id.message_post(
+                body=obj_chat.create_message(action))
         if not action and self.last_workflow_id.wait_user_response:
             return self.get_actions(
                 self.last_workflow_id.next_step_id, token, bot, update)
