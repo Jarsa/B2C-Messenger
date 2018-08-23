@@ -86,7 +86,9 @@ class B2CBase(models.Model):
             })
         if handler:
             chat_id.message_post(
-                body=handler)
+                body=handler,
+                author_id=self.env['res.partner'].search([
+                    ('bot_id', '=', data_bot['chat_id'])]).id)
         if action.message:
             chat_id.message_post(
                 body=obj_chat.create_message(action))

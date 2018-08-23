@@ -6,6 +6,7 @@ from odoo import _, api, fields, models
 
 class B2CChat(models.Model):
     _name = 'b2c.chat'
+    _description = 'Chat'
     _inherit = ['mail.thread']
 
     name = fields.Char(string='Name',)
