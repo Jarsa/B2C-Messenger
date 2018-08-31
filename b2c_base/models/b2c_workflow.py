@@ -17,6 +17,10 @@ DEFAULT_PYTHON_CODE = _("""# Available variables:
 #    information in ir.logging table
 #  - Warning: Warning Exception to use with raise
 #  - res: Variable destinated to store the reuslt of this function
+#  * If selection send_location, you can send:
+#      res = {'name': 'Torreón',
+#             'state': 'Coahuila',
+#             'country': 'México'},
 # To return an action, assign: action = {...}\n\n\n\n""")
 
 
@@ -58,7 +62,8 @@ class B2CWorkflowLine(models.Model):
         required=True,
         help='Field to express the user input',)
     model_id = fields.Many2one(
-        'ir.model', string='Model',)
+        'ir.model', string='Model',
+        default=lambda self: self.env.ref('b2c_telegram.model_b2c_base').id)
     delay = fields.Integer(string='Delay',)
     next_step_id = fields.Many2one(
         'b2c.workflow.line', string='Next Step',)

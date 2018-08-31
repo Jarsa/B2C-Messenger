@@ -17,6 +17,17 @@ class B2CBase(models.Model):
     provider = fields.Selection(selection_add=[("telegram", "Telegram")])
 
     def create_text_telegram(self, data):
+        custom_keyboard = False
+        if data['send_location'] and not data.get('items'):
+            custom_keyboard = telegram.ReplyKeyboardMarkup(
+                [[telegram.KeyboardButton(
+                    text="Send Location", request_location=True)]],
+                one_time_keyboard=True)
+        if data['send_contact'] and not data.get('items'):
+            custom_keyboard = telegram.ReplyKeyboardMarkup(
+                [[telegram.KeyboardButton(
+                    text="Send Contact", request_contact=True)]],
+                one_time_keyboard=True)
         if data.get('items') and data['send_location']:
             address = self.get_coordinates(
                 data['items']['name'],
@@ -32,7 +43,8 @@ class B2CBase(models.Model):
                 data['chat_id'], data['message'],
                 reply_markup=reply_keyboard)
         else:
-            data['bot'].send_message(data['chat_id'], data['message'])
+            data['bot'].send_message(
+                data['chat_id'], data['message'], reply_markup=custom_keyboard)
 
     def send_image_telegram(self, data):
         data['bot'].send_photo(
@@ -41,16 +53,6 @@ class B2CBase(models.Model):
     def create_selection_telegram(self, data):
         if 'custom_keyboard' in data.keys():
             custom_keyboard = data['custom_keyboard']
-        if data['send_location']:
-            custom_keyboard = telegram.ReplyKeyboardMarkup(
-                [[telegram.KeyboardButton(
-                    text="Send Location", request_location=True)]],
-                one_time_keyboard=True)
-        if data['send_contact']:
-            custom_keyboard = telegram.ReplyKeyboardMarkup(
-                [[telegram.KeyboardButton(
-                    text="Send Contact", request_contact=True)]],
-                one_time_keyboard=True)
         data['bot'].send_message(
             text=data['message'], chat_id=data['chat_id'],
             reply_markup=custom_keyboard)

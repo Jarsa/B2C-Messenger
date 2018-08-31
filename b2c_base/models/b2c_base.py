@@ -24,6 +24,7 @@ HANDLERS = {
 
 class B2CBase(models.Model):
     _name = 'b2c.base'
+    _description = 'B2C Base'
 
     name = fields.Char(required=True)
     active = fields.Boolean('Active', default=True)
@@ -79,6 +80,7 @@ class B2CBase(models.Model):
         chat_id = obj_chat.search([('chat_id', '=', data_bot['chat_id'])])
         if not chat_id:
             chat_id = obj_chat.create({
+                'name': update.message.from_user.full_name,
                 'chat_id': data_bot['chat_id'],
                 'provider': action.provider,
                 'workflow_id': action.workflow_id.id,

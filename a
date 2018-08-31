@@ -1,0 +1,106 @@
+[1mdiff --git a/b2c_base/models/b2c_base.py b/b2c_base/models/b2c_base.py[m
+[1mindex f350acf..baae985 100644[m
+[1m--- a/b2c_base/models/b2c_base.py[m
+[1m+++ b/b2c_base/models/b2c_base.py[m
+[36m@@ -24,6 +24,7 @@[m [mHANDLERS = {[m
+ [m
+ class B2CBase(models.Model):[m
+     _name = 'b2c.base'[m
+[32m+[m[32m    _description = 'B2C Base'[m
+ [m
+     name = fields.Char(required=True)[m
+     active = fields.Boolean('Active', default=True)[m
+[36m@@ -79,6 +80,7 @@[m [mclass B2CBase(models.Model):[m
+         chat_id = obj_chat.search([('chat_id', '=', data_bot['chat_id'])])[m
+         if not chat_id:[m
+             chat_id = obj_chat.create({[m
+[32m+[m[32m                'name': update.message.from_user.full_name,[m
+                 'chat_id': data_bot['chat_id'],[m
+                 'provider': action.provider,[m
+                 'workflow_id': action.workflow_id.id,[m
+[1mdiff --git a/b2c_base/models/b2c_workflow.py b/b2c_base/models/b2c_workflow.py[m
+[1mindex d4d352f..8a79f91 100644[m
+[1m--- a/b2c_base/models/b2c_workflow.py[m
+[1m+++ b/b2c_base/models/b2c_workflow.py[m
+[36m@@ -17,6 +17,10 @@[m [mDEFAULT_PYTHON_CODE = _("""# Available variables:[m
+ #    information in ir.logging table[m
+ #  - Warning: Warning Exception to use with raise[m
+ #  - res: Variable destinated to store the reuslt of this function[m
+[32m+[m[32m#  * If selection send_location, you can send:[m
+[32m+[m[32m#      res = {'name': 'Torreón',[m
+[32m+[m[32m#             'state': 'Coahuila',[m
+[32m+[m[32m#             'country': 'México'},[m
+ # To return an action, assign: action = {...}\n\n\n\n""")[m
+ [m
+ [m
+[36m@@ -58,7 +62,8 @@[m [mclass B2CWorkflowLine(models.Model):[m
+         required=True,[m
+         help='Field to express the user input',)[m
+     model_id = fields.Many2one([m
+[31m-        'ir.model', string='Model',)[m
+[32m+[m[32m        'ir.model', string='Model',[m
+[32m+[m[32m        default=lambda self: self.env.ref('b2c_telegram.model_b2c_base').id)[m
+     delay = fields.Integer(string='Delay',)[m
+     next_step_id = fields.Many2one([m
+         'b2c.workflow.line', string='Next Step',)[m
+[1mdiff --git a/b2c_base/views/b2c_chat_view.xml b/b2c_base/views/b2c_chat_view.xml[m
+[1mindex 833a526..d3be7b5 100644[m
+[1m--- a/b2c_base/views/b2c_chat_view.xml[m
+[1m+++ b/b2c_base/views/b2c_chat_view.xml[m
+[36m@@ -32,6 +32,7 @@[m
+         <field name="model">b2c.chat</field>[m
+         <field name="arch" type="xml">[m
+             <tree>[m
+[32m+[m[32m                <field name="name"></field>[m
+                 <field name="chat_id"/>[m
+                 <field name="provider"/>[m
+                 <field name="workflow_id"/>[m
+[1mdiff --git a/b2c_telegram/models/b2c_base.py b/b2c_telegram/models/b2c_base.py[m
+[1mindex 1281332..f17a0d6 100644[m
+[1m--- a/b2c_telegram/models/b2c_base.py[m
+[1m+++ b/b2c_telegram/models/b2c_base.py[m
+[36m@@ -17,6 +17,17 @@[m [mclass B2CBase(models.Model):[m
+     provider = fields.Selection(selection_add=[("telegram", "Telegram")])[m
+ [m
+     def create_text_telegram(self, data):[m
+[32m+[m[32m        custom_keyboard = False[m
+[32m+[m[32m        if data['send_location'] and not data.get('items'):[m
+[32m+[m[32m            custom_keyboard = telegram.ReplyKeyboardMarkup([m
+[32m+[m[32m                [[telegram.KeyboardButton([m
+[32m+[m[32m                    text="Send Location", request_location=True)]],[m
+[32m+[m[32m                one_time_keyboard=True)[m
+[32m+[m[32m        if data['send_contact'] and not data.get('items'):[m
+[32m+[m[32m            custom_keyboard = telegram.ReplyKeyboardMarkup([m
+[32m+[m[32m                [[telegram.KeyboardButton([m
+[32m+[m[32m                    text="Send Contact", request_contact=True)]],[m
+[32m+[m[32m                one_time_keyboard=True)[m
+         if data.get('items') and data['send_location']:[m
+             address = self.get_coordinates([m
+                 data['items']['name'],[m
+[36m@@ -32,7 +43,8 @@[m [mclass B2CBase(models.Model):[m
+                 data['chat_id'], data['message'],[m
+                 reply_markup=reply_keyboard)[m
+         else:[m
+[31m-            data['bot'].send_message(data['chat_id'], data['message'])[m
+[32m+[m[32m            data['bot'].send_message([m
+[32m+[m[32m                data['chat_id'], data['message'], reply_markup=custom_keyboard)[m
+ [m
+     def send_image_telegram(self, data):[m
+         data['bot'].send_photo([m
+[36m@@ -41,16 +53,6 @@[m [mclass B2CBase(models.Model):[m
+     def create_selection_telegram(self, data):[m
+         if 'custom_keyboard' in data.keys():[m
+             custom_keyboard = data['custom_keyboard'][m
+[31m-        if data['send_location']:[m
+[31m-            custom_keyboard = telegram.ReplyKeyboardMarkup([m
+[31m-                [[telegram.KeyboardButton([m
+[31m-                    text="Send Location", request_location=True)]],[m
+[31m-                one_time_keyboard=True)[m
+[31m-        if data['send_contact']:[m
+[31m-            custom_keyboard = telegram.ReplyKeyboardMarkup([m
+[31m-                [[telegram.KeyboardButton([m
+[31m-                    text="Send Contact", request_contact=True)]],[m
+[31m-                one_time_keyboard=True)[m
+         data['bot'].send_message([m
+             text=data['message'], chat_id=data['chat_id'],[m
+             reply_markup=custom_keyboard)[m
