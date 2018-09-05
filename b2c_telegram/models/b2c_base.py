@@ -28,7 +28,7 @@ class B2CBase(models.Model):
                 [[telegram.KeyboardButton(
                     text="Send Contact", request_contact=True)]],
                 one_time_keyboard=True)
-        if data.get('items') and data['send_location']:
+        if data.get('items') and data.get('send_location'):
             address = self.get_coordinates(
                 data['items']['name'],
                 data['items']['state'],
